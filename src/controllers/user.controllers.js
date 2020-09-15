@@ -55,18 +55,18 @@ export const createLead = async (req, res, next) => {
         recommendations,
       });
     }
-    if (leadType === "inquiry") {
+    if (leadType === "inquiry" || leadType === "hire") {
       await inquiryModel.create({
         user: newUser._id,
         farmSize,
         recommendations,
         message,
-        reason,
+        reason: leadType,
       });
     }
 
     await SendGridMail.send({
-      from: "no-reply@gmail.com",
+      from: "no-reply@tractrac.co",
       to: email,
       templateId: "d-c05f32b44f1e4babbbb655cde60b49ea",
     });
