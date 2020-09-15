@@ -2,6 +2,7 @@ import leadModel from "../models/lead.model";
 import tractorProfileModel from "../models/tractor-profile.model";
 import inquiryModel from "../models/inquiry.model";
 import SendGridMail from "@sendgrid/mail";
+import userModel from "../models/user.model";
 
 SendGridMail.setApiKey(
   "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"
@@ -17,11 +18,10 @@ export const createLead = async (req, res, next) => {
       message,
       email,
       phone,
-      password,
       leadType,
-      tractorAmount,
-      operatorAmount,
-      tractorBrands,
+      tractorAmount = "1",
+      operatorAmount = "1",
+      tractorBrands = [],
       state = "",
       lga = "",
       town = "",
@@ -30,15 +30,16 @@ export const createLead = async (req, res, next) => {
       reason,
     } = req.body;
 
-    const newUser = await leadModel.create({
+    const newUser = await userModel.create({
       fname,
       lname,
       email,
       phone,
-      password,
       gender,
       businessType,
-      ...(leadyType === "agent" ? { userRole: ["agent"] } : ["lead"]),
+      ...(leadType === "agent"
+        ? { userRole: ["agent"] }
+        : { userRole: [leadType] }),
     });
     // const token = newToken(newUser)
     // const { password: p, ...rest } = newUser
@@ -51,6 +52,7 @@ export const createLead = async (req, res, next) => {
         state,
         lga,
         town,
+        recommendations,
       });
     }
     if (leadType === "inquiry") {
@@ -72,6 +74,7 @@ export const createLead = async (req, res, next) => {
       message: "Created  successfully",
     });
   } catch (err) {
+    console.log(err);
     return next({
       message: "Registration failed",
       error: err,

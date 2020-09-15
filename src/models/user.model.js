@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
-const validator = require("validator");
-const bcrypt = require("bcryptjs");
+import validator from "validator";
 
 const { Schema } = mongoose;
 
@@ -23,7 +22,6 @@ const userSchema = new Schema(
       },
     },
     password: {
-      required: true,
       type: String,
       default: "",
     },
@@ -70,38 +68,38 @@ const userSchema = new Schema(
     },
     active: {
       type: Boolean,
-      default: true,
+      default: false,
     },
   },
   { timestamps: true }
 );
 
 // eslint-disable-next-line func-names
-userSchema.pre("save", function (next) {
-  if (!this.isModified("password")) {
-    return next();
-  }
-  bcrypt.hash(this.password, 9, (err, hash) => {
-    if (err) {
-      return next(err);
-    }
+// userSchema.pre("save", function (next) {
+//   if (!this.isModified("password")) {
+//     return next();
+//   }
+//   bcrypt.hash(this.password, 9, (err, hash) => {
+//     if (err) {
+//       return next(err);
+//     }
 
-    this.password = hash;
-    next();
-  });
-});
+//     this.password = hash;
+//     next();
+//   });
+// });
 
 // eslint-disable-next-line func-names
-userSchema.methods.checkPassword = function (password) {
-  const passwordHash = this.password;
-  return new Promise((resolve, reject) => {
-    bcrypt.compare(password, passwordHash, (err, same) => {
-      if (err) {
-        return reject(err);
-      }
-      resolve(same);
-    });
-  });
-};
+// userSchema.methods.checkPassword = function (password) {
+//   const passwordHash = this.password;
+//   return new Promise((resolve, reject) => {
+//     bcrypt.compare(password, passwordHash, (err, same) => {
+//       if (err) {
+//         return reject(err);
+//       }
+//       resolve(same);
+//     });
+//   });
+// };
 
 export default mongoose.model("user", userSchema);
