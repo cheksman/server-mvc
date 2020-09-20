@@ -38,7 +38,7 @@ export const createLead = async (req, res, next) => {
       email,
       phone: phone || phoneNumber,
       gender,
-      businessType,
+      ...(businessType && { businessType }),
       ...(leadType === "agent"
         ? { userRole: ["agent"] }
         : { userRole: [leadType] }),
