@@ -9,6 +9,7 @@ SendGridMail.setApiKey(
 );
 
 export const createLead = async (req, res, next) => {
+  console.log(req.body);
   try {
     const {
       fname,
@@ -25,9 +26,9 @@ export const createLead = async (req, res, next) => {
       state = "",
       lga = "",
       town = "",
-      farmSize,
-      recommendations,
-      reason,
+      farmSize = "",
+      recommendations = "",
+      reason = "",
     } = req.body;
 
     const newUser = await userModel.create({
@@ -55,16 +56,13 @@ export const createLead = async (req, res, next) => {
         recommendations,
       });
     }
-    if (leadType === "inquiry" || leadType === "hire") {
-      await inquiryModel.create({
-        user: newUser._id,
-        farmSize,
-        recommendations,
-        message,
-        reason: leadType,
-      });
-    }
-
+    await inquiryModel.create({
+      user: newUser._id,
+      farmSize,
+      recommendations,
+      message,
+      reason: leadType,
+    });
     await SendGridMail.send({
       from: "no-reply@tractrac.co",
       to: email,
