@@ -12,14 +12,15 @@ export const createLead = async (req, res, next) => {
   console.log(req.body);
   try {
     const {
-      fname,
-      lname,
-      gender,
-      businessType,
-      message,
-      email,
-      phone,
-      leadType,
+      fname = "",
+      lname = "",
+      gender = "",
+      businessType = "",
+      message = "",
+      email = "",
+      phone = "",
+      phoneNumber = "",
+      leadType = "",
       tractorAmount = "1",
       operatorAmount = "1",
       tractorBrands = [],
@@ -35,7 +36,7 @@ export const createLead = async (req, res, next) => {
       fname,
       lname,
       email,
-      phone,
+      phone: phone || phoneNumber,
       gender,
       businessType,
       ...(leadType === "agent"
