@@ -38,6 +38,7 @@ const userSchema = new Schema(
         "operator",
         "enlistor",
         "hire",
+        "contact",
       ],
     },
     businessType: {

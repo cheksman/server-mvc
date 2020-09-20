@@ -73,7 +73,6 @@ export const createLead = async (req, res, next) => {
       message: "Created  successfully",
     });
   } catch (err) {
-    console.log(err);
     return next({
       message: "Registration failed",
       error: err,
