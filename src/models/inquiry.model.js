@@ -12,7 +12,7 @@ const inquiriesModel = new Schema(
       type: String,
       default: "",
     },
-    recomendations: {
+    recommendations: {
       type: String,
       default: "",
     },
