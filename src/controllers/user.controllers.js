@@ -60,7 +60,7 @@ export const createLead = async (req, res, next) => {
     await inquiryModel.create({
       user: newUser._id,
       farmSize,
-      recommendations: ,
+      recommendations,
       message,
       reason: leadType,
     });
