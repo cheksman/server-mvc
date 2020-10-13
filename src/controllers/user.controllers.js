@@ -61,39 +61,39 @@ export const createLead = async (req, res, next) => {
       message,
       reason: leadType,
     });
-    await SendGridMail.send({
-      from: "no-reply@tractrac.co",
-      to: "tractracnigeria@gmail.com",
-      subject: "Tractrac Inquiry made",
-      text: "A new inquiry was made into Tractrac",
-      html: `<div>
-      <p>Hi,</p>
-      <p>A new inquiry has been made, see below for details</p>
-      <p>Firstname: ${fname}</p>,
-      <p>Lastname: ${lname}</p>,
-      <p>Gender: ${gender}</p>,
-      <p>Business type: ${businessType}</p>,
-      <p>Message: ${message}</p>,
-      <p>Email: ${email}</p>,
-      <p>Phone: ${phone}</p>,
-      <p>Phone2: ${phoneNumber}</p>,
-      <p>Type of Lead: ${leadType}</p>,
-      <p>Number of tractors requested: ${tractorAmount}</p>,
-      <p>Number of Operators: ${operatorAmount}</p>,
-      <p>Tractor brands: ${tractorBrands}</p>,
-      <p>State: ${state}</p>,
-      <p>Lga: ${lga}</p>,
-      <p>Size of farm: ${farmSize}</p>,
-      <p>Recommendations: ${recommendations}</p>,
-      <div>
-      `,
-    });
+    // await SendGridMail.send({
+    //   from: "no-reply@tractrac.co",
+    //   to: "tractracnigeria@gmail.com",
+    //   subject: "Tractrac Inquiry made",
+    //   text: "A new inquiry was made into Tractrac",
+    //   html: `<div>
+    //   <p>Hi,</p>
+    //   <p>A new inquiry has been made, see below for details</p>
+    //   <p>Firstname: ${fname}</p>,
+    //   <p>Lastname: ${lname}</p>,
+    //   <p>Gender: ${gender}</p>,
+    //   <p>Business type: ${businessType}</p>,
+    //   <p>Message: ${message}</p>,
+    //   <p>Email: ${email}</p>,
+    //   <p>Phone: ${phone}</p>,
+    //   <p>Phone2: ${phoneNumber}</p>,
+    //   <p>Type of Lead: ${leadType}</p>,
+    //   <p>Number of tractors requested: ${tractorAmount}</p>,
+    //   <p>Number of Operators: ${operatorAmount}</p>,
+    //   <p>Tractor brands: ${tractorBrands}</p>,
+    //   <p>State: ${state}</p>,
+    //   <p>Lga: ${lga}</p>,
+    //   <p>Size of farm: ${farmSize}</p>,
+    //   <p>Recommendations: ${recommendations}</p>,
+    //   <div>
+    //   `,
+    // });
     return res.status(201).json({
       message: "Submitted  successfully",
     });
   } catch (err) {
     return next({
-      message: "Registration failed",
+      message: "Error, please try again",
       error: err,
     });
   }
