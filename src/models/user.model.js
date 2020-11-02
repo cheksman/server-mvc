@@ -59,15 +59,6 @@ const userSchema = new Schema(
       default:
         "https://res.cloudinary.com/volantis-tides/image/upload/v1567868749/Exalt/ShelterOfGlory/ProfilePix/man-avatar_n8btpc.png",
     },
-    state: {
-      type: String,
-    },
-    lga: {
-      type: String,
-    },
-    town: {
-      type: String,
-    },
     active: {
       type: Boolean,
       default: false,

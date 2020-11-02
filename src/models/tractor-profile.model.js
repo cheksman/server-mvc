@@ -8,7 +8,7 @@ const tractorProfileModel = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "user",
     },
-    tractorAmount: {
+    unit: {
       type: Number,
       default: 0,
     },
@@ -33,6 +33,11 @@ const tractorProfileModel = new Schema(
       type: Boolean,
       default: true,
     },
+    channel: {
+      type: String,
+      enum: ["web", "mobile"],
+      default: "web"
+    }
   },
   { timestamps: true }
 );

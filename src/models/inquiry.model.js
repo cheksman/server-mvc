@@ -19,9 +19,26 @@ const inquiriesModel = new Schema(
     message: {
       type: String,
     },
+    tractorNumber: {
+      type: String,
+    },
     reason: {
       type: String,
     },
+    state: {
+      type: String,
+    },
+    lga: {
+      type: String,
+    },
+    town: {
+      type: String,
+    },
+    channel: {
+      type: String,
+      enum: ["web", "mobile"],
+      default: "web"
+    }
   },
   { timestamps: true }
 );

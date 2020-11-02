@@ -30,6 +30,11 @@ const leadsModel = new Schema(
     interests: {
       type: [String],
     },
+    channel: {
+      type: String,
+      enum: ["web", "mobile"],
+      default: "web"
+    }
   },
   { timestamps: true }
 );

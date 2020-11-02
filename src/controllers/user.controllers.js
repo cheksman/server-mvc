@@ -18,7 +18,8 @@ export const createLead = async (req, res, next) => {
       phone = "",
       phoneNumber = "",
       leadType = "",
-      tractorAmount = "1",
+      unit = "1",
+      tractorNumber = "",
       operatorAmount = "1",
       tractorBrands = [],
       state = "",
@@ -45,7 +46,7 @@ export const createLead = async (req, res, next) => {
     if (leadType === "investor") {
       await tractorProfileModel.create({
         user: newUser._id,
-        tractorAmount,
+        unit,
         operatorAmount,
         tractorBrands,
         state,
@@ -59,6 +60,10 @@ export const createLead = async (req, res, next) => {
       farmSize,
       recommendations,
       message,
+      tractorNumber,
+      state,
+      lga,
+      town,
       reason: leadType,
     });
     // await SendGridMail.send({
