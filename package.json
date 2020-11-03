@@ -4,6 +4,7 @@
   "description": "tractrac server",
   "main": "src/index.js",
   "dependencies": {
+    "@mailchimp/mailchimp_marketing": "^3.0.22",
     "@sendgrid/mail": "^7.0.1",
     "@sentry/node": "^5.15.4",
     "axios": "^0.19.0",
