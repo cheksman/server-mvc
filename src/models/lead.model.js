@@ -5,35 +5,46 @@ const { Schema } = mongoose;
 
 const leadsModel = new Schema(
   {
-    fname: {
-      type: String,
-      default: "",
-    },
-    lname: {
-      type: String,
-      default: "",
-    },
-    email: {
-      trim: true,
-      type: String,
-      validate: {
-        validator: (value) => validator.isEmail(value),
-        message: "{VALUE} is not a valid email",
-      },
-    },
-    phone: {
-      type: String,
-      default: "",
-      required: true,
-      trim: true,
-    },
-    interests: {
-      type: [String],
-    },
     channel: {
       type: String,
       enum: ["web", "mobile"],
       default: "web"
+    },
+    leadType: {
+      type: String,
+      enum: ["agent", "enlistor", "hire", "operator", "investor", "contact"],
+      default: "contact"
+    },
+    farmSize: {
+      type: String
+    },
+    recommendations: {
+      type: String
+    },
+    state: {
+      type: String
+    },
+    lga: {
+      type: String
+    },
+    town: {
+      type: String
+    },
+    unit: {
+      type: String
+    },
+    tractorNumber: {
+      type: String
+    },
+    operatorNumber: {
+      type: String
+    },
+    tractorBrands: {
+      type: [String]
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'user'
     }
   },
   { timestamps: true }

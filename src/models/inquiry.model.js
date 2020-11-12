@@ -8,30 +8,7 @@ const inquiriesModel = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "user",
     },
-    farmSize: {
-      type: String,
-      default: "",
-    },
-    recommendations: {
-      type: String,
-      default: "",
-    },
     message: {
-      type: String,
-    },
-    tractorNumber: {
-      type: String,
-    },
-    reason: {
-      type: String,
-    },
-    state: {
-      type: String,
-    },
-    lga: {
-      type: String,
-    },
-    town: {
       type: String,
     },
     channel: {

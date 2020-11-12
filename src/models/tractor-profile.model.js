@@ -9,34 +9,25 @@ const tractorProfileModel = new Schema(
       ref: "user",
     },
     unit: {
-      type: Number,
-      default: 0,
-    },
-    operatorAmount: {
-      type: Number,
-      default: 0,
+      type: String,
+      default: "0",
     },
     tractorBrands: {
       type: [String],
-    },
-
-    state: {
-      type: String,
-    },
-    lga: {
-      type: String,
-    },
-    town: {
-      type: String,
-    },
-    active: {
-      type: Boolean,
-      default: true,
     },
     channel: {
       type: String,
       enum: ["web", "mobile"],
       default: "web"
+    },
+    gender: {
+      type: String,
+    },
+    investorType: {
+      type: String,
+    },
+    recommendations: {
+      type: String,
     }
   },
   { timestamps: true }
