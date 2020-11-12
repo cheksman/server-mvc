@@ -39,6 +39,12 @@ const leadsModel = new Schema(
     operatorNumber: {
       type: String
     },
+    business: {
+      type: String
+    },
+    crops: {
+      type: [String]
+    },
     tractorBrands: {
       type: [String]
     },
