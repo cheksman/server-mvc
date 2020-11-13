@@ -6,7 +6,7 @@ import leadsModel from "../models/lead.model";
 
 SendGridMail.setApiKey(process.env.SENDGRID_API);
 
-const sendMail = (to, from, firstName, lastName) => {
+const sendMail = (to, from, firstName, lastName, phone) => {
   const msg = {
   to: to, // Change to your recipient
   from: from, // Change to your verified sender
@@ -302,7 +302,8 @@ export const createWebLead = async (req, res, next) => {
         email, 
         "info@tractrac.co",
         firstName,
-        lastName
+        lastName,
+        phoneNumber
         )
     }
 

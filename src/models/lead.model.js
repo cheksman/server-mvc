@@ -12,7 +12,7 @@ const leadsModel = new Schema(
     },
     leadType: {
       type: String,
-      enum: ["agent", "enlistor", "hire", "operator", "investor", "contact"],
+      enum: ["agent", "enlistor", "hire", "operator", "investor", "contact", "farmer"],
       default: "contact"
     },
     farmSize: {
