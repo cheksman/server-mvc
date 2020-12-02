@@ -17,10 +17,12 @@ const userSchema = new Schema(
     email: {
       trim: true,
       type: String,
-      validate: {
-        validator: (value) => validator.isEmail(value),
-        message: "{VALUE} is not a valid email",
-      },
+    },
+    phone: {
+      type: String,
+      required: true,
+      trim: true,
+      unique: true,
     },
     password: {
       type: String,
@@ -31,7 +33,6 @@ const userSchema = new Schema(
       required: true,
       default: ["user"],
       enum: [
-        "superadmin",
         "admin",
         "msp",
         "investor",
@@ -41,22 +42,48 @@ const userSchema = new Schema(
         "enlistor",
         "hire",
         "user",
+        "student",
       ],
     },
-    activatedRole: {
+    unactivatedRole: {
       type: [String],
-      enum: ['farmer', 'investor', 'enlistor', 'msp', 'agent', 'operator', 'hire'],
-      default: []
+      enum: [
+        "admin",
+        "msp",
+        "investor",
+        "agent",
+        "operator",
+        "farmer",
+        "enlistor",
+        "hire",
+        "user",
+        "student",
+      ],
     },
-    phone: {
+    activationStatus: {
       type: String,
-      default: "",
-      required: true,
-      trim: true,
+      enum: ["pending", "activated", "declined"],
+      default: "pending",
     },
     gender: {
       type: String,
     },
+    age: {
+      type: String,
+    },
+    languageSpoken: {
+      type: [String],
+    },
+    schoolQualification: {
+      type: String,
+    },
+    cvURL: {
+      type: String,
+    },
+    tractorNumber: {
+      type: String,
+    },
+
     pixURL: {
       type: String,
       default:

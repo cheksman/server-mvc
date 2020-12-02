@@ -78,6 +78,7 @@ export const subscribeContactToMailchimp = async (req, res, next) => {
       message: "Error subscribing to newsletter"
     })
   } catch (error) {
+    console.log(error)
     return next({
       message: "Could not subscribe email to Newsletter",
       err: error

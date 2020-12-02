@@ -3,6 +3,7 @@ import inquiryModel from "../models/inquiry.model";
 import SendGridMail from "@sendgrid/mail";
 import userModel from "../models/user.model";
 import leadsModel from "../models/lead.model";
+import { findUser } from "../services/user.services";
 
 SendGridMail.setApiKey(process.env.SENDGRID_API);
 
@@ -27,8 +28,6 @@ SendGridMail
   })
 }
 
-
-
 export const createLead = async (req, res, next) => {
   try {
     const {
@@ -50,8 +49,7 @@ export const createLead = async (req, res, next) => {
       recommendations = "",
     } = req.body;
     const { userId } = req.userData;
-    let updatedUser;
-    const user = await userModel.findOne({_id: userId}).lean();
+    const user = await findUser(userId)
     if (!user) {
       return res.status(404).json({
         message: "User not found",
@@ -62,18 +60,6 @@ export const createLead = async (req, res, next) => {
         message: "You need to have a reason to contact us",
       });
     }
-
-    updatedUser = await userModel.findByIdAndUpdate(
-      userId,
-      {
-        $set: {
-          userRole: [leadType, ...user.userRole],
-        },
-      },
-      {
-        upsert: true,
-      }
-    );
 
     if (leadType === "investor") {
       const newInvestor = await tractorProfileModel.create({
@@ -164,7 +150,7 @@ export const createWebLead = async (req, res, next) => {
         user._id,
         {
           $set: {
-            userRole: [leadType, ...user.userRole],
+            unactivatedRole: [leadType, ...user.userRole],
           },
         },
         {
@@ -229,7 +215,7 @@ export const createWebLead = async (req, res, next) => {
         user._id,
         {
           $set: {
-            userRole: [leadType, ...user.userRole],
+            unactivatedRole: [leadType, ...user.userRole],
           },
         },
         {
@@ -365,3 +351,51 @@ export const createWebLead = async (req, res, next) => {
     });
   }
 };
+
+export const getAllUsers = async (req, res, next) => {
+  const { userRole } = req.userData
+  try {
+    if(!userRole.includes("admin" || "superadmin")) {
+      return res.status(403).json({
+        message: "Unauthorized"
+      })
+    }
+    const users = await userModel.find({}, {
+      _id: 1,
+      fname: 1,
+      lname: 1,
+      phone: 1,
+      email: 1,
+      gender: 1,
+      userRole: 1,
+      activationStatus: 1,
+      pixURL: 1,
+    }).lean().exec()
+    if(!users){
+      return res.status(404).json({
+        message: "There are no users"
+      })
+    }
+    res.status(201).json({
+      message: 'successful',
+      data: users
+    })
+  } catch (error) {
+    console.log(error)
+    return next({
+      message: "Error getting users, please try again later",
+      error: error
+    })
+  }
+}
+
+export const addTractorOwner = async (req, res, next) => {
+  const { userId, userRole} = req.userData;
+  try {
+    if(userRole === "student") {
+      
+    }
+  } catch (error) {
+    
+  }
+}

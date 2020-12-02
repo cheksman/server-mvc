@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 import { json, urlencoded } from "body-parser";
 import cors from "cors";
 import * as Sentry from "@sentry/node";
+import * as Tracing from "@sentry/tracing";
 import morgan from "morgan";
 import "dotenv/config";
 import route from "./routes/routerAPI";
@@ -22,7 +23,7 @@ mongoose.connection.on("error", (err) => {
 // eslint-disable-next-line no-underscore-dangle
 global.__serverDir = __dirname;
 Sentry.init({
-  dsn: "https://8011920eb693416baa7c96f196c4f3f8@sentry.io/5170539",
+  dsn: process.env.SENTRY_DSN,
 });
 
 const app = express();
