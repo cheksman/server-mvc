@@ -1,54 +1,23 @@
 import userModel from "../models/user.model";
+import { findUser, saveUser } from "../services/user.services";
 
 import { newToken } from "./../utils/auth";
 
-export const createUser = async (
-  req,
-  res,
-  next
-) => {
+export const createUser = async (req, res, next) => {
   try {
-    const {
-      email,
-      phoneNumber,
-      password,
-      firstName,
-      lastName,
-    } = req.body;
+    const { email = "", phoneNumber } = req.body;
     let user = null;
-    user = await userModel.findOne({ phoneNumber }).lean().exec();
+
+    user = await findUser(phoneNumber);
     if (user) {
       return res.status(403).json({
-        message: `${phoneNumber} already exists`,
+        message: `Forbiden, User ${phoneNumber} already exists`,
       });
     }
-    user = await userModel.findOne({ email }).lean().exec();
-    if (user) {
-      return res.status(403).json({
-        message: `${email} already exists`,
-      });
+    if (email === "info@tractrac.co" || email === "tractracnigeria@gmail.com") {
+      saveUser(req, res, ["admin"]);
     }
-    const newUser = await userModel.create({
-      email,
-      phone: phoneNumber,
-      password,
-      fname: firstName,
-      lname: lastName,
-    });
-    if (newUser) {
-      const token = newToken(newUser);
-      const val = newUser.toObject();
-      if (val) {
-        const { password: p, ...rest } = val;
-        return res.status(201).json({
-          message: "Created  successfully",
-          token,
-          data: {
-            ...rest,
-          },
-        });
-      }
-    }
+    saveUser(req, res, ["user"]);
   } catch (err) {
     return next({
       message: "Registration failed",
@@ -57,19 +26,15 @@ export const createUser = async (
   }
 };
 
-export const loginUser = async (
-  req,
-  res,
-  next
-) => {
+export const loginUser = async (req, res, next) => {
   try {
-    const { email, phone, password } = req.body;
+    const { email, phoneNumber, password } = req.body;
     let user;
     if (email) {
       user = await userModel.findOne({ email });
-    } else if (phone && phone.length > 9) {
+    } else if (phoneNumber && phoneNumber.length > 9) {
       user = await userModel.findOne({
-        phone: { $regex: phone, $options: "i" },
+        phone: { $regex: phoneNumber, $options: "i" },
       });
     }
     if (!user) {
@@ -93,6 +58,7 @@ export const loginUser = async (
         message: "Login successful",
         token,
         data: rest,
+        useRole: user.useRole,
       });
     }
   } catch (error) {
