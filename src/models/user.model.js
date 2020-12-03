@@ -77,13 +77,9 @@ const userSchema = new Schema(
     schoolQualification: {
       type: String,
     },
-    cvURL: {
-      type: String,
-    },
     tractorNumber: {
       type: String,
     },
-
     pixURL: {
       type: String,
       default:

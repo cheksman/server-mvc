@@ -12,7 +12,7 @@ export const getQueriedTractorsService = async (userId) => {
   return await tractorModel.find({_id: userId}).lean().exec();
 }
 
-export const saveTractorService = async (req, res, userId) => {
+export const saveTractorService = async (req, res, next, userId) => {
   const {
     brand,
     model,
@@ -26,7 +26,9 @@ export const saveTractorService = async (req, res, userId) => {
     location,
   } = req.body;
 
-  const newTractor = await tractorModel.create({
+  try {
+    const newTractor = await tractorModel.create({
+      user: userId,
       brand: brand,
       model: model,
       tractorType: tractorType,
@@ -47,4 +49,10 @@ export const saveTractorService = async (req, res, userId) => {
       message: "Successful",
       data: newTractor
   })
+  } catch (error) {
+    return next({
+      message: "Error saving tractor to database"
+    })
+  }
+  
 };
