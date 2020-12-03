@@ -15,9 +15,9 @@ export const createUser = async (req, res, next) => {
       });
     }
     if (email === "info@tractrac.co" || email === "tractracnigeria@gmail.com") {
-      saveUser(req, res, ["admin"]);
+      saveUser(req, res, next, ["admin"]);
     }
-    saveUser(req, res, ["user"]);
+    saveUser(req, res, next, ["user"]);
   } catch (err) {
     return next({
       message: "Registration failed",

@@ -15,6 +15,9 @@ const leadsModel = new Schema(
       enum: ["agent", "enlistor", "hire", "operator", "investor", "contact", "msp", "farmer"],
       default: "contact"
     },
+    cvUrl: {
+      type: String
+    },
     farmSize: {
       type: String
     },
