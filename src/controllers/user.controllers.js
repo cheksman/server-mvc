@@ -7,7 +7,7 @@ import {
   createContactService,
   createAgentsService,
 } from "../services/lead.services";
-
+import { sendMail } from "../services/mail.services";
 
 
 export const createLead = async (req, res, next) => {
