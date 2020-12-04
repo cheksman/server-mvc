@@ -5,8 +5,9 @@ export const findUser = async (userPhone) => {
   return await userModel.findOne({ userPhone }).lean().exec();
 };
 
-export const saveUser = async (req, res, userRole) => {
+export const saveUser = async (req, res, next, userRole) => {
   const { phoneNumber, email, password, firstName, lastName } = req.body;
+  console.log(userRole)
   try {
     const newUser = await userModel.create({
       phone: phoneNumber,
