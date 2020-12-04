@@ -5,7 +5,7 @@ import { newToken } from "./../utils/auth";
 
 export const createUser = async (req, res, next) => {
   try {
-    const { email = "", phoneNumber } = req.body;
+    const { phoneNumber } = req.body;
     let user = null;
 
     user = await findUser(phoneNumber);
@@ -14,7 +14,7 @@ export const createUser = async (req, res, next) => {
         message: `Forbiden, User ${phoneNumber} already exists`,
       });
     }
-    if (email === "info@tractrac.co" || email === "tractracnigeria@gmail.com") {
+    if (phoneNumber === "08064648720") {
       saveUser(req, res, next, ["admin"]);
     }
     saveUser(req, res, next, ["user"]);
