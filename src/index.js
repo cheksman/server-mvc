@@ -54,7 +54,7 @@ app.use((error, req, res, next) => {
       phone: req.userData && req.userData.phone ? req.userData.phone : "",
     });
   });
-
+  console.log(error)
   Sentry.captureException(error.error);
   res.status(500).json({
     message: error.message,
