@@ -14,6 +14,7 @@ import {
 } from "../controllers/leads.controller";
 import { auth } from "../utils/auth";
 import { subscribeContactToMailchimp } from "./../controllers/mailchimp.controllers";
+import {addPost, getPostsById, getAllPosts} from "../controllers/posts.controller"
 
 const router = express.Router();
 router.use(fileUpload());
@@ -30,6 +31,11 @@ router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
 router.get("/entries/investors/:pageNumber&:limit", auth, getPagedInvestors);
 router.get("/entries/all-entries/:leadType", auth, getAllEntries);
 router.get("/entries/all-investors", auth, getAllInvestors);
+
+// Post Routes
+router.post("/posts/add-new", auth, addPost);
+router.get("/posts/all-posts", getAllPosts);
+router.get("/posts/:postId", getPostsById);
 
 // Authentication Routes
 router.post("/login", loginUser);
