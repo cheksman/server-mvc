@@ -90,7 +90,7 @@ export const createAgentLead = async (req, res, next) => {
   const { values } = req.body;
   const reqVal = JSON.parse(values);
   const cvFiles = req.files.file;
-  const cloudinaryResponse = uploadFile(cvFiles, "auto", "cvs");
+  const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
   const {
     phoneNumber = "",
     firstName = "",
