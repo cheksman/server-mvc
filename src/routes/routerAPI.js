@@ -24,7 +24,7 @@ router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 
 // Enries Routes
-router.post("/web/create-agent", createAgentLead);
+router.post("/user/web/create-agent", createAgentLead);
 router.post("/user/create", auth, createLead);
 router.post("/user/webcreate", createWebLead);
 router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
