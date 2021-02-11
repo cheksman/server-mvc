@@ -90,7 +90,7 @@ export const createAgentLead = async (req, res, next) => {
   const { values } = req.body;
   const reqVal = JSON.parse(values);
   const cvFiles = req.files.file;
-  const cloudinaryResponse = uploadFile(cvFiles, "auto", "cvs");
+  const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
   const {
     phoneNumber = "",
     firstName = "",
@@ -130,6 +130,30 @@ export const createAgentLead = async (req, res, next) => {
     return res.status(500).json({
       message: "Error saving agent lead",
     });
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: err,
+    });
+  }
+};
+
+export const createMobileAgentLead = async (req, res, next) => {
+  const { values } = req.body;
+  const { userId } = req.userData;
+  const reqVal = JSON.parse(values);
+  const cvFiles = req.files.file;
+  const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
+  try {
+    if (user) {
+      return createAgentsService(
+        reqVal,
+        res,
+        next,
+        userId,
+        cloudinaryResponse
+      );
+    }
   } catch (error) {
     return next({
       message: "Error, please try again",
