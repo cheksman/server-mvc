@@ -10,6 +10,9 @@ const leadsModel = new Schema(
       enum: ["web", "mobile"],
       default: "web"
     },
+    schoolQualification: {
+      type: String
+    },
     leadType: {
       type: String,
       enum: ["agent", "enlistor", "hire", "operator", "investor", "contact", "msp", "farmer"],

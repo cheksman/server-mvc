@@ -7,6 +7,7 @@ import {
   createLead,
   createWebLead,
   createAgentLead,
+  createMobileAgentLead,
   getPagedEntries,
   getAllEntries,
   getAllInvestors,
@@ -26,6 +27,7 @@ router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
 router.post("/user/create", auth, createLead);
+router.post("/user/mob/create-agent", auth, createMobileAgentLead)
 router.post("/user/webcreate", createWebLead);
 router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
 router.get("/entries/investors/:pageNumber&:limit", auth, getPagedInvestors);
