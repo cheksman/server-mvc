@@ -138,6 +138,30 @@ export const createAgentLead = async (req, res, next) => {
   }
 };
 
+export const createMobileAgentLead = async (req, res, next) => {
+  const { values } = req.body;
+  const { userId } = req.userData;
+  const reqVal = JSON.parse(values);
+  const cvFiles = req.files.file;
+  const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
+  try {
+    if (user) {
+      return createAgentsService(
+        reqVal,
+        res,
+        next,
+        userId,
+        cloudinaryResponse
+      );
+    }
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: err,
+    });
+  }
+};
+
 export const getAllEntries = async (req, res, next) => {
   const { userRole } = req.userData;
   const { leadType } = req.params;

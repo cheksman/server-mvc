@@ -1,12 +1,13 @@
 import postsModel from "../models/posts.model";
 
 const addPostsService = async (reqVal, req, res, next, featuredImage) => {
-  const { categories, tags, title, excerpt, post } = reqVal;
+  const { categories, readTime, tags, title, excerpt, post } = reqVal;
   const { userId } = req.userData;
   try {
     const newPost = await postsModel.create({
       categories: categories,
       tags: tags,
+      readTime: readTime,
       featuredImage: featuredImage.secure_url,
       title: title,
       excerpt: excerpt,
