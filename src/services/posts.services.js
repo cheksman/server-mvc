@@ -33,7 +33,7 @@ const addPostsService = async (reqVal, req, res, next, featuredImage) => {
 };
 
 const getAllPostsService = async () => {
-    return await postsModel.find({}).limit(5).sort("-1").lean().exec()
+    return await postsModel.find({}).populate("author").limit(5).sort("-1").lean().exec()
 }
 
 const getPostByIdService = async (id) => {

@@ -37,7 +37,7 @@ export const uploadFile = (file, resourceType, fileCategory) => {
   return promise
 }
 
-const deleteFile = (public_id) => {
+export const deleteFile = (public_id) => {
   new Promise((resolve, reject) => {
     cloudinary.uploader.destroy(public_id, (err, result) => {
       resolve(result);
