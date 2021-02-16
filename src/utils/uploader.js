@@ -10,7 +10,7 @@ cloudinary.config({
 });
 
 export const uploadFile = (file, resourceType, fileCategory) => {
-  new Promise((resolve, reject) => {
+  let promise = new Promise((resolve, reject) => {
     const newFilename = uuidv4();
     file.mv(`${__dirname}/${newFilename}-${file.name}`, (err) => {
       if (err) {
@@ -34,6 +34,7 @@ export const uploadFile = (file, resourceType, fileCategory) => {
         });
     });
   });
+  return promise
 }
 
 export const deleteFile = (public_id) => {

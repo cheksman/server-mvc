@@ -5,14 +5,14 @@ export const findTractorService = async (tractor) => {
 };
 
 export const getAllTractorService = async () => {
-  return await tractorModel.find().lean().exec();
+  return await tractorModel.find().populate("user").lean().exec();
 };
 
 export const getQueriedTractorsService = async (userId) => {
   return await tractorModel.find({_id: userId}).lean().exec();
 }
 
-export const saveTractorService = async (req, res, next, userId) => {
+export const saveTractorService = async (reqVal, next, cloudinaryResponse, userId) => {
   const {
     brand,
     model,
@@ -23,32 +23,31 @@ export const saveTractorService = async (req, res, next, userId) => {
     plateNum,
     manufactureYear,
     insurance,
-    location,
-  } = req.body;
+    tracker,
+    state,
+    lga,
+    town
+  } = reqVal;
 
   try {
     const newTractor = await tractorModel.create({
       user: userId,
       brand: brand,
       model: model,
-      tractorType: tractorType,
+      ...(tractorType && {tractorType: tractorType}),
       tractorRating: tractorRating,
-      purchaseYear: purchaseYear,
-      chasisNum: chasisNum,
+      ...(purchaseYear && {purchaseYear: purchaseYear}),
+      ...(chasisNum && {chasisNum: chasisNum}),
       ...(plateNum && {plateNum: plateNum}),
-      manufactureYear: manufactureYear,
+      ...(manufactureYear && {manufactureYear: manufactureYear}),
       insurance: insurance,
-      ...(location && {location: location})
+      tracker: tracker,
+      state: state,
+      lga: lga,
+      town: town,
+      tractorImageUrl: cloudinaryResponse?.secure_url
   })
-  if(!newTractor) {
-      return res.status(500).json({
-          message: "Could not add tractor"
-      })
-  }
-  return res.status(201).json({
-      message: "Successful",
-      data: newTractor
-  })
+  return newTractor
   } catch (error) {
     return next({
       message: "Error saving tractor to database"
