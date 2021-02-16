@@ -45,7 +45,7 @@ export const saveTractorService = async (reqVal, next, cloudinaryResponse, userI
       state: state,
       lga: lga,
       town: town,
-      tractorImageUrl: cloudinaryResponse?.secure_url
+      tractorImageUrl: cloudinaryResponse.secure_url
   })
   return newTractor
   } catch (error) {
