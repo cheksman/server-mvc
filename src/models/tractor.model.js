@@ -16,8 +16,6 @@ const tractorModel = new Schema(
     },
     tractorType: {
       type: String,
-      enum: ["web", "mobile"],
-      default: "web",
     },
     tractorRating: {
       type: String,
@@ -39,9 +37,22 @@ const tractorModel = new Schema(
       enum: ["web", "mobile"],
       default: "web",
     },
-    location: {
+    state: {
       type: String,
     },
+    lga: {
+      type: String,
+    },
+    town: {
+      type: String,
+    },
+    tracker: {
+      type: String,
+      default: "no"
+    },
+    tractorImageUrl: {
+      type: String
+    }
   },
   { timestamps: true }
 );
