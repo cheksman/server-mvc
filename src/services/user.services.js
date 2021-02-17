@@ -6,7 +6,7 @@ export const findUser = async (userPhone) => {
 };
 
 export const saveUser = async (req, res, next, userRole) => {
-  const { phoneNumber, email, password, firstName, lastName } = req.body;
+  const { phoneNumber, email, password, firstName, lastName, gender } = req.body;
   try {
     const newUser = await userModel.create({
       phone: phoneNumber,
@@ -16,6 +16,7 @@ export const saveUser = async (req, res, next, userRole) => {
       userRole: userRole,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
+      ...(gender && {gender: gender})
     });
     if (newUser) {
       const token = newToken(newUser);

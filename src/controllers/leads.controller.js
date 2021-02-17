@@ -143,9 +143,8 @@ export const createMobileAgentLead = async (req, res, next) => {
   const { userId } = req.userData;
   const reqVal = JSON.parse(values);
   const cvFiles = req.files.file;
-  const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
   try {
-    if (user) {
+    const cloudinaryResponse = await uploadFile(cvFiles, "auto", "cvs");
       return createAgentsService(
         reqVal,
         res,
@@ -153,11 +152,10 @@ export const createMobileAgentLead = async (req, res, next) => {
         userId,
         cloudinaryResponse
       );
-    }
   } catch (error) {
     return next({
       message: "Error, please try again",
-      error: err,
+      error: error,
     });
   }
 };
