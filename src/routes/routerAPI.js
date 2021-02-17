@@ -2,7 +2,7 @@
 import express from "express";
 import fileUpload from "express-fileupload";
 import { createUser, loginUser } from "../controllers/auth.controller";
-import { getAllUsers, getPagedUsers } from "../controllers/user.controllers";
+import { getAllUsers, createStudentAgent, getPagedUsers } from "../controllers/user.controllers";
 import {
   createLead,
   createWebLead,
@@ -13,7 +13,7 @@ import {
   getAllInvestors,
   getPagedInvestors
 } from "../controllers/leads.controller";
-import { addNewTractor, getAllUserTractors } from "../controllers/tractor.controller";
+import { addNewTractor, getAllUserTractors, getActivationStatus } from "../controllers/tractor.controller";
 import { auth } from "../utils/auth";
 import { subscribeContactToMailchimp } from "./../controllers/mailchimp.controllers";
 import {addPost, getPostsById, getAllPosts} from "../controllers/posts.controller"
@@ -36,8 +36,13 @@ router.get("/entries/all-entries/:leadType", auth, getAllEntries);
 router.get("/entries/all-investors", auth, getAllInvestors);
 
 // Tractor Routes
-router.post("/tractor/add-new", auth, addNewTractor)
-router.get("/tractor/:userId/tractors", auth, getAllUserTractors)
+router.post("/tractor/add-new", auth, addNewTractor);
+router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
+
+
+// Agent Programme Routes
+router.get("/tractor/activation-status", auth, getActivationStatus);
+router.post("/user/student/create-agent", auth, createStudentAgent);
 
 // Post Routes
 router.post("/posts/add-new", auth, addPost);

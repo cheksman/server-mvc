@@ -122,6 +122,7 @@ export const createAgentsService = async (
     channel = "web",
     recommendations = "",
   } = reqVal;
+
   try {
     const newLead = await leadsModel.create({
       user: userId,

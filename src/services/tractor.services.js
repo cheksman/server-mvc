@@ -9,10 +9,16 @@ export const getAllTractorService = async () => {
 };
 
 export const getQueriedTractorsService = async (userId) => {
-  return await tractorModel.find({_id: userId}).lean().exec();
-}
+  return await tractorModel.find({ _id: userId }).lean().exec();
+};
 
-export const saveTractorService = async (reqVal, next, cloudinaryResponse, userId) => {
+export const saveTractorService = async (
+  reqVal,
+  res,
+  next,
+  cloudinaryResponse,
+  userId
+) => {
   const {
     brand,
     model,
@@ -26,7 +32,7 @@ export const saveTractorService = async (reqVal, next, cloudinaryResponse, userI
     tracker,
     state,
     lga,
-    town
+    town,
   } = reqVal;
 
   try {
@@ -34,24 +40,31 @@ export const saveTractorService = async (reqVal, next, cloudinaryResponse, userI
       user: userId,
       brand: brand,
       model: model,
-      ...(tractorType && {tractorType: tractorType}),
+      ...(tractorType && { tractorType: tractorType }),
       tractorRating: tractorRating,
-      ...(purchaseYear && {purchaseYear: purchaseYear}),
-      ...(chasisNum && {chasisNum: chasisNum}),
-      ...(plateNum && {plateNum: plateNum}),
-      ...(manufactureYear && {manufactureYear: manufactureYear}),
+      ...(purchaseYear && { purchaseYear: purchaseYear }),
+      ...(chasisNum && { chasisNum: chasisNum }),
+      ...(plateNum && { plateNum: plateNum }),
+      ...(manufactureYear && { manufactureYear: manufactureYear }),
       insurance: insurance,
       tracker: tracker,
       state: state,
       lga: lga,
       town: town,
-      tractorImageUrl: cloudinaryResponse.secure_url
-  })
-  return newTractor
+      tractorImageUrl: cloudinaryResponse.secure_url,
+    });
+    if (!newTractor) {
+      return res.status(500).json({
+        message: "Could not add Tractor",
+      });
+    }
+    return res.status(200).json({
+      message: "Tractor sucessfully added",
+      data: newTractor,
+    });
   } catch (error) {
     return next({
-      message: "Error saving tractor to database"
-    })
+      message: "Error saving tractor to database",
+    });
   }
-  
 };
