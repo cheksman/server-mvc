@@ -1,6 +1,6 @@
 import userModel from "../models/user.model";
-import { ObjectId } from "mongodb";
-
+import agentProgrammeModel from "../models/agent-programme.model";
+import { uploadFile } from "../utils/uploader";
 
 export const getAllUsers = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -48,7 +48,7 @@ export const getAllUsers = async (req, res, next) => {
 export const getPagedUsers = async (req, res, next) => {
   const { userRole } = req.userData;
   const { pageNumber, limit } = req.params;
-  const lim = Number(limit)
+  const lim = Number(limit);
   let skippedDocuments = (Number(pageNumber) - 1) * lim;
 
   try {
@@ -94,7 +94,52 @@ export const getPagedUsers = async (req, res, next) => {
   }
 };
 
+export const createStudentAgent = async (req, res, next) => {
+  const { values } = req.body;
+  const { userId } = req.userData;
+  const {
+    school,
+    course,
+    email,
+    category,
+    gradYear,
+    dateOfBirth,
+    identityType,
+  } = JSON.parse(values);
+  const identificationPic = req.files.idPic;
+  const profilePic = req.files.profilePic;
+  try {
+    const idPicResponse = await uploadFile(identificationPic, "auto", "ids");
+    const profilePicResponse = await uploadFile(profilePic, "auto", "profiles");
+    const newAgent = await agentProgrammeModel.create({
+      school: school,
+      category: category,
+      user: userId,
+      email: email,
+      course: course,
+      gradYear: gradYear,
+      dateOfBirth: dateOfBirth,
+      identityType: identityType,
+      identificationPic: idPicResponse.secure_url,
+      profilePic: profilePicResponse.secure_url,
+    });
 
+    if (!newAgent) {
+      return res.status(500).json({
+        message: "Could not create student agent",
+      });
+    }
+
+    return res.status(200).json({
+      message: "Student agent created",
+    });
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: error,
+    });
+  }
+};
 
 export const addTractorOwner = async (req, res, next) => {
   const { userId, userRole } = req.userData;

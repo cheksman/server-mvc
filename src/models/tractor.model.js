@@ -34,7 +34,7 @@ const tractorModel = new Schema(
     },
     insurance: {
       type: String,
-      enum: ["web", "mobile"],
+      enum: ["Insured", "Not Insured"],
       default: "web",
     },
     state: {
@@ -48,7 +48,7 @@ const tractorModel = new Schema(
     },
     tracker: {
       type: String,
-      default: "no"
+      default: "No"
     },
     tractorImageUrl: {
       type: String

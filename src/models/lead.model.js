@@ -48,6 +48,9 @@ const leadsModel = new Schema(
     business: {
       type: String
     },
+    contact: {
+      type: String
+    },
     crops: {
       type: [String]
     },
