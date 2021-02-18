@@ -20,19 +20,21 @@ export const saveTractorService = async (
   userId
 ) => {
   const {
-    brand,
-    model,
-    tractorType,
-    tractorRating,
-    purchaseYear,
-    chasisNum,
-    plateNum,
-    manufactureYear,
-    insurance,
-    tracker,
-    state,
-    lga,
-    town,
+    brand = "",
+    model = "",
+    tractorType = "",
+    tractorRating = "",
+    purchaseYear = "",
+    chasisNum = "",
+    plateNum = "",
+    manufactureYear = "",
+    insurance = "",
+    insuranceCompany = "",
+    insuranceExpiry = "",
+    tracker = "",
+    state = "",
+    lga = "",
+    town = "",
   } = reqVal;
 
   try {
@@ -46,6 +48,8 @@ export const saveTractorService = async (
       ...(chasisNum && { chasisNum: chasisNum }),
       ...(plateNum && { plateNum: plateNum }),
       ...(manufactureYear && { manufactureYear: manufactureYear }),
+      insuranceCompany: insuranceCompany,
+      insuranceExpiry: insuranceExpiry,
       insurance: insurance,
       tracker: tracker,
       state: state,

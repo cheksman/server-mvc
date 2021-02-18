@@ -37,6 +37,12 @@ const tractorModel = new Schema(
       enum: ["Insured", "Not Insured"],
       default: "web",
     },
+    insuranceCompany: {
+      type: String
+    },
+    insuranceExpiry: {
+      type: String
+    },
     state: {
       type: String,
     },

@@ -7,7 +7,6 @@ import { uploadFile } from "../utils/uploader";
 import { isUserAdmin, isUserStudent } from "../utils/helpers";
 import userModel from '../models/user.model'
 
-
 export const getAllTractors = async (req, res, next) => {
   const { userRole } = req.userData;
   try {
@@ -101,6 +100,7 @@ export const getActivationStatus = async (req, res, next) => {
   const isStudent = isUserStudent(userRole);
   if (isStudent) {
     const user = await userModel.findById(userId).lean().exec();
+    console.log(user.activationStatus)
     if (user) {
       return res.status(200).json({
         message: "succesful",
