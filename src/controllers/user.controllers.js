@@ -1,6 +1,12 @@
 import userModel from "../models/user.model";
 import agentProgrammeModel from "../models/agent-programme.model";
 import { uploadFile } from "../utils/uploader";
+import { isUserAdmin } from "../utils/helpers";
+import {
+  findUserByIdAndUpdate,
+  findUser,
+  findUserById,
+} from "../services/user.services";
 
 export const getAllUsers = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -147,4 +153,39 @@ export const addTractorOwner = async (req, res, next) => {
     if (userRole === "student") {
     }
   } catch (error) {}
+};
+
+export const updateUserRole = async (req, res, next) => {
+  const { userRole } = req.userData;
+  const { userId } = req.params;
+  const { newRoles } = req.body;
+  try {
+    if (isUserAdmin(userRole)) {
+      const usersDetails = await findUserById(userId);
+      const userNewData = await findUserByIdAndUpdate(
+        userId,
+        usersDetails.userRole,
+        newRoles,
+        res,
+        next
+      );
+
+      if (!userNewData) {
+        return res.status(500).json({ message: "Could not update user role" });
+      }
+      return res.status(201).json({
+        message: "User role updated",
+        data: userNewData,
+      });
+    }
+
+    return res.status(401).json({
+      message: "Only admins can update user roles",
+    });
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: error,
+    });
+  }
 };
