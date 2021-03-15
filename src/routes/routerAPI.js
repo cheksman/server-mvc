@@ -2,7 +2,12 @@
 import express from "express";
 import fileUpload from "express-fileupload";
 import { createUser, loginUser } from "../controllers/auth.controller";
-import { getAllUsers, getPagedUsers } from "../controllers/user.controllers";
+import {
+  getAllUsers,
+  createStudentAgent,
+  getPagedUsers,
+  updateUserRole,
+} from "../controllers/user.controllers";
 import {
   createLead,
   createWebLead,
@@ -11,12 +16,20 @@ import {
   getPagedEntries,
   getAllEntries,
   getAllInvestors,
-  getPagedInvestors
+  getPagedInvestors,
 } from "../controllers/leads.controller";
-import { addNewTractor, getAllUserTractors } from "../controllers/tractor.controller";
+import {
+  addNewTractor,
+  getAllUserTractors,
+  getActivationStatus,
+} from "../controllers/tractor.controller";
 import { auth } from "../utils/auth";
 import { subscribeContactToMailchimp } from "./../controllers/mailchimp.controllers";
-import {addPost, getPostsById, getAllPosts} from "../controllers/posts.controller"
+import {
+  addPost,
+  getPostsById,
+  getAllPosts,
+} from "../controllers/posts.controller";
 
 const router = express.Router();
 router.use(fileUpload());
@@ -24,11 +37,12 @@ router.use(fileUpload());
 // User Routes
 router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
+router.post("/user/update/role/:userId", auth, updateUserRole);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
 router.post("/user/create", auth, createLead);
-router.post("/user/mob/create-agent", auth, createMobileAgentLead)
+router.post("/user/mob/create-agent", auth, createMobileAgentLead);
 router.post("/user/webcreate", createWebLead);
 router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
 router.get("/entries/investors/:pageNumber&:limit", auth, getPagedInvestors);
@@ -36,8 +50,12 @@ router.get("/entries/all-entries/:leadType", auth, getAllEntries);
 router.get("/entries/all-investors", auth, getAllInvestors);
 
 // Tractor Routes
-router.post("/tractor/add-new", auth, addNewTractor)
-router.get("/tractor/:userId/tractors", auth, getAllUserTractors)
+router.post("/tractor/add-new", auth, addNewTractor);
+router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
+
+// Agent Programme Routes
+router.get("/tractor/activation-status", auth, getActivationStatus);
+router.post("/user/student/create-agent", auth, createStudentAgent);
 
 // Post Routes
 router.post("/posts/add-new", auth, addPost);

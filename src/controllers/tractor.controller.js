@@ -4,7 +4,8 @@ import {
   saveTractorService,
 } from "../services/tractor.services";
 import { uploadFile } from "../utils/uploader";
-import { isUserAdmin } from "../utils/helpers";
+import { isUserAdmin, isUserStudent } from "../utils/helpers";
+import userModel from '../models/user.model'
 
 export const getAllTractors = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -36,7 +37,7 @@ export const getAllTractors = async (req, res, next) => {
 export const addNewTractor = async (req, res, next) => {
   const { values } = req.body;
   const reqVal = JSON.parse(values);
-  const tractorImage = req.files.file;
+  const tractorImage = req.files && req.files.file;
   const { userId } = req.userData;
   try {
     if (!tractorImage) {
@@ -44,42 +45,27 @@ export const addNewTractor = async (req, res, next) => {
         secure_url:
           "https://res.cloudinary.com/tractrac-global/image/upload/v1613478588/placeholder_ul8hjl.webp",
       };
-      const newTractor = await saveTractorService(
+      return saveTractorService(
         reqVal,
+        res,
         next,
         cResponse,
         userId
       );
-      if (!newTractor) {
-        return res.status(500).json({
-          message: "Could not add Tractor",
-        });
-      }
-      return res.status(200).json({
-        message: "Tractor sucessfully added",
-        data: newTractor,
-      });
     }
     const cloudinaryResponse = await uploadFile(
       tractorImage,
       "auto",
       "tractors"
     );
-    const newTractor = await saveTractorService(
+    return saveTractorService(
       reqVal,
+      res,
       next,
       cloudinaryResponse,
       userId
     );
-    if (!newTractor) {
-      return res.status(500).json({
-        message: "Could not add Tractor",
-      });
-    }
-    return res.status(200).json({
-      message: "Tractor sucessfully added",
-      data: newTractor,
-    });
+    
   } catch (error) {
     return next({
       message: "Could not add tractor",
@@ -108,3 +94,21 @@ export const getAllUserTractors = async (req, res, next) => {
     });
   }
 };
+
+export const getActivationStatus = async (req, res, next) => {
+  const {userRole, userId} = req.userData;
+  const isStudent = isUserStudent(userRole);
+  if (isStudent) {
+    const user = await userModel.findById(userId).lean().exec();
+    console.log(user.activationStatus)
+    if (user) {
+      return res.status(200).json({
+        message: "succesful",
+        data: user.activationStatus,
+      });
+    }
+    return res.status(404).json({
+      message: "User not found please log into app and try again",
+    });
+  }
+}

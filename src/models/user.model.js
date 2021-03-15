@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 import bcrypt from "bcryptjs";
-import validator from "validator";
 
 const { Schema } = mongoose;
 

@@ -1,7 +1,7 @@
 import postsModel from "../models/posts.model";
 
 const addPostsService = async (reqVal, req, res, next, featuredImage) => {
-  const { categories, readTime, tags, title, excerpt, post } = reqVal;
+  const { categories, readTime, tags, title, excerpt, post, postAuthor } = reqVal;
   const { userId } = req.userData;
   try {
     const newPost = await postsModel.create({
@@ -12,6 +12,7 @@ const addPostsService = async (reqVal, req, res, next, featuredImage) => {
       title: title,
       excerpt: excerpt,
       post: post,
+      postAuthor: postAuthor,
       author: userId,
     });
 
@@ -33,7 +34,7 @@ const addPostsService = async (reqVal, req, res, next, featuredImage) => {
 };
 
 const getAllPostsService = async () => {
-    return await postsModel.find({}).populate("author").limit(5).sort("-1").lean().exec()
+    return await postsModel.find({}).populate("author").limit(20).sort("-1").lean().exec()
 }
 
 const getPostByIdService = async (id) => {

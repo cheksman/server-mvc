@@ -8,6 +8,10 @@ const postsModel = new Schema(
       type: mongoose.Types.ObjectId,
       ref: "user",
     },
+    postAuthor: {
+      type: String,
+      default: "Mujong, Rachel"
+    },
     readTime: {
       type: String,
       default: "5 minutes"

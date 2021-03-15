@@ -112,6 +112,7 @@ export const createAgentsService = async (
     gender = "",
     crops = [],
     business = "",
+    contact = "",
     tractorNumber = "",
     operatorNumber = "1",
     tractorBrands = [],
@@ -122,6 +123,7 @@ export const createAgentsService = async (
     channel = "web",
     recommendations = "",
   } = reqVal;
+
   try {
     const newLead = await leadsModel.create({
       user: userId,
@@ -132,6 +134,7 @@ export const createAgentsService = async (
       state: state,
       crops: crops,
       business: business,
+      contact: contact,
       lga: lga,
       town: town,
       ...(cloudinary && { cvUrl: cloudinary.secure_url }),

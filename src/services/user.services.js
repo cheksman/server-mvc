@@ -1,12 +1,55 @@
 import userModel from "../models/user.model";
 import { newToken } from "../utils/auth";
 
-export const findUser = async (userPhone) => {
-  return await userModel.findOne({ userPhone }).lean().exec();
+export const findUser = async (userPhone) =>
+  await userModel.findOne({ userPhone }).lean().exec();
+
+export const findUserById = async (userId) =>
+  await userModel.findById(userId).lean().exec();
+
+export const findUserByIdAndUpdate = async (
+  userId,
+  prevRole,
+  newRole,
+  res,
+  next
+) => {
+  try {
+    if (Array.isArray(prevRole) && Array.isArray(newRole)) {
+      return await userModel.findByIdAndUpdate(
+        userId,
+        {
+          $set: {
+            userRole: prevRole.concat(newRole),
+          },
+        },
+        {
+          new: true,
+          upsert: true,
+        }
+      );
+    }
+
+    return res.status(500).json({
+      message: "User roles not an array"
+    })
+  } catch (error) {
+    return next({
+      message: "Error saving user to database",
+      error: error,
+    });
+  }
 };
 
 export const saveUser = async (req, res, next, userRole) => {
-  const { phoneNumber, email, password, firstName, lastName } = req.body;
+  const {
+    phoneNumber,
+    email,
+    password,
+    firstName,
+    lastName,
+    gender,
+  } = req.body;
   try {
     const newUser = await userModel.create({
       phone: phoneNumber,
@@ -16,6 +59,7 @@ export const saveUser = async (req, res, next, userRole) => {
       userRole: userRole,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
+      ...(gender && { gender: gender }),
     });
     if (newUser) {
       const token = newToken(newUser);
