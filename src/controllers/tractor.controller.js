@@ -9,10 +9,18 @@ import { uploadFile } from "../utils/uploader";
 import { isUserAdmin, isUserStudent } from "../utils/helpers";
 import userModel from "../models/user.model";
 
+
+// for getting list of all contractors
 export const getAllTractors = async (req, res, next) => {
+
+  // destructure to get the userRole
   const { userRole } = req.userData;
+
   try {
+    // checks if the user is an Admin
     const isAdmin = isUserAdmin(userRole);
+
+    // is isAdmin is true, we call the getAllTractorService method
     if (isAdmin) {
       const tractors = await getAllTractorService();
       if (tractors && tractors.length) {
@@ -36,9 +44,12 @@ export const getAllTractors = async (req, res, next) => {
   }
 };
 
+
+// for adding new tractors
 export const addNewTractor = async (req, res, next) => {
   const { values } = req.body;
-  const reqVal = JSON.parse(values);
+
+  const reqVal = JSON.parse(values); // to convert text into a JavaScript object:
   const tractorImage = req.files && req.files.file;
   const { userId } = req.userData;
   try {

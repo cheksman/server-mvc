@@ -6,12 +6,20 @@ import {
 } from "../services/posts.services";
 import { uploadFile } from "../utils/uploader"
 
+
+// for adding a post
 const addPost = async (req, res, next) => {
   const { values } = req.body;
   const reqVal = JSON.parse(values);
+
+  // get the file added by the user
   const imageFile = req.files.file;
+  
   try {
+    // upload the image to cloudinary
     const featuredImage = await uploadFile(imageFile, "image", "blog");
+    
+    // call the addPostsService mentioned to process all the values
     await addPostsService(reqVal, req, res, next, featuredImage)
   } catch (error) {
     next({
