@@ -129,13 +129,11 @@ export const createStudentAgent = async (req, res, next) => {
       identificationPic: idPicResponse.secure_url,
       profilePic: profilePicResponse.secure_url,
     });
-
     if (!newAgent) {
       return res.status(500).json({
         message: "Could not create student agent",
       });
     }
-
     return res.status(200).json({
       message: "Student agent created",
     });
@@ -147,13 +145,13 @@ export const createStudentAgent = async (req, res, next) => {
   }
 };
 
-export const addTractorOwner = async (req, res, next) => {
-  const { userId, userRole } = req.userData;
-  try {
-    if (userRole === "student") {
-    }
-  } catch (error) {}
-};
+// export const addTractorOwner = async (req, res, next) => {
+//   const { userId, userRole } = req.userData;
+//   try {
+//     if (userRole === "student") {
+//     }
+//   } catch (error) {}
+// };
 
 export const updateUserRole = async (req, res, next) => {
   const { userRole } = req.userData;
