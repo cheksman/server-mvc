@@ -8,8 +8,6 @@ const currentUserRole = (roles, role) => {
 export const isUserAdmin = (roles) => currentUserRole(roles, "admin");
 export const isUserInvestor = (roles) => currentUserRole(roles, "investor");
 export const isUserAgent = (roles) => currentUserRole(roles, "agent");
-export const isUserFarmer = (roles) => currentUserRole(roles, "farmer");
-export const isUserEnlistor = (roles) => currentUserRole(roles, "enlistor");
 export const isUserMSP = (roles) => currentUserRole(roles, "msp");
 export const isUserOperator = (roles) => currentUserRole(roles, "operator");
 export const isUserStudent = (roles) => currentUserRole(roles, "student");

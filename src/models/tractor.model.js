@@ -49,7 +49,7 @@ const tractorModel = new Schema(
     lga: {
       type: String,
     },
-    town: {
+    address: {
       type: String,
     },
     tracker: {
@@ -58,6 +58,19 @@ const tractorModel = new Schema(
     },
     tractorImageUrl: {
       type: String
+    },
+    status: {
+      type: String,
+      default: 'unverified',
+      enum: ['verified', 'unverified']
+    },
+    assigned: {
+      type: Boolean,
+      default: false
+    },
+    assignedTo: {
+      type: mongoose.Types.ObjectId,
+      ref: "user"
     }
   },
   { timestamps: true }

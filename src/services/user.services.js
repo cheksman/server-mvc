@@ -53,7 +53,6 @@ export const saveUser = async (req, res, next, userRole) => {
   try {
     const newUser = await userModel.create({
       phone: phoneNumber,
-      password,
       fname: firstName,
       lname: lastName,
       userRole: userRole,

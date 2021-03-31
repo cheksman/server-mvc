@@ -1,7 +1,19 @@
 import tractorModel from "../models/tractor.model";
 
-export const findTractorService = async (tractor) => {
-  return await tractorModel.findOne({ tractor }).lean().exec();
+export const findTractorService = async (tractorId) => {
+  return await tractorModel.findById({ tractorId }).populate('user', 'assignedTo').lean().exec();
+};
+
+export const findTractorAndUpdateService = async (tractorId, props) => {
+  return await tractorModel.findByIdAndUpdate(tractorId, {
+    $set: {
+      ...props
+    }},
+    {
+      new: true,
+      upsert: true
+    }
+  ).populate('user', 'assignedTo')
 };
 
 export const getAllTractorService = async () => {
@@ -9,7 +21,7 @@ export const getAllTractorService = async () => {
 };
 
 export const getQueriedTractorsService = async (userId) => {
-  return await tractorModel.find({ _id: userId }).lean().exec();
+  return await tractorModel.find({ user: userId }).populate("user", "assignedTo").lean().exec();
 };
 
 export const saveTractorService = async (

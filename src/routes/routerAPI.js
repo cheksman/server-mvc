@@ -22,7 +22,16 @@ import {
   addNewTractor,
   getAllUserTractors,
   getActivationStatus,
+  getAllTractors,
+  assignTractor,
+  verifyTractor
 } from "../controllers/tractor.controller";
+import {
+  getAllLeasings,
+  getAllLeasingsByStatus,
+  getAllUsersLeasings,
+  leaseTractorRequest
+} from "../controllers/leasing.controller"
 import { auth } from "../utils/auth";
 import { subscribeContactToMailchimp } from "./../controllers/mailchimp.controllers";
 import {
@@ -52,6 +61,15 @@ router.get("/entries/all-investors", auth, getAllInvestors);
 // Tractor Routes
 router.post("/tractor/add-new", auth, addNewTractor);
 router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
+router.get("/tractor/all", auth, getAllTractors);
+router.put("/tractor/verify/:tractorId", auth, verifyTractor);
+router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor);
+
+// Leasing Routes
+router.post("/leasing/new-request", auth, leaseTractorRequest);
+router.get("/leasing/all", auth, getAllLeasings);
+router.get("/leasing/user/all", auth, getAllUsersLeasings);
+router.get("/leasing/all/status=:status", auth, getAllLeasingsByStatus);
 
 // Agent Programme Routes
 router.get("/tractor/activation-status", auth, getActivationStatus);
