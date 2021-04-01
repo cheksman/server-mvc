@@ -1,12 +1,15 @@
 import userModel from "../models/user.model";
 import { newToken } from "../utils/auth";
 
-export const findUser = async (userPhone) =>
-  await userModel.findOne({ userPhone }).lean().exec();
+export const findUser = async (userPhone) => {
+  const res = await userModel.findOne({ phone: userPhone }).lean().exec();
+  return res
+}
 
-export const findUserById = async (userId) =>
-  await userModel.findById(userId).lean().exec();
-
+export const findUserById = async (userId) =>{
+  const res = await userModel.findById(userId).lean().exec();
+  return res
+}
 export const findUserByIdAndUpdate = async (
   userId,
   prevRole,

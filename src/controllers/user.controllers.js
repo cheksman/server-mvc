@@ -187,3 +187,24 @@ export const updateUserRole = async (req, res, next) => {
     });
   }
 };
+
+export const getSingleUser = async (req, res, next) => {
+  const { userId } = req.userData;
+  try {
+    const user = await findUserById(userId);
+    if (!user) {
+      return user.status(404).json({
+        message: "user not found",
+      });
+    }
+    return res.status(201).json({
+      message: "successful",
+      data: user,
+    });
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: error,
+    });
+  }
+};

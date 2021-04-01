@@ -13,7 +13,7 @@ export const newToken = (user) =>
     },
     process.env.JWT_SECRET,
     {
-      expiresIn: "7d",
+      expiresIn: "1d",
     }
   )
 

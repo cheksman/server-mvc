@@ -6,6 +6,7 @@ import {
   getAllUsers,
   createStudentAgent,
   getPagedUsers,
+  getSingleUser,
   updateUserRole,
 } from "../controllers/user.controllers";
 import {
@@ -47,6 +48,7 @@ router.use(fileUpload());
 router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 router.post("/user/update/role/:userId", auth, updateUserRole);
+router.get("/user/single", auth, getSingleUser)
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
