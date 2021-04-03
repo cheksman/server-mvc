@@ -24,6 +24,7 @@ export const getQueriedTractorsService = async (userId) => {
   return await tractorModel.find({ user: userId }).populate("user", "assignedTo").lean().exec();
 };
 
+// for saving new tractors to the db
 export const saveTractorService = async (
   reqVal,
   res,

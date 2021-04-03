@@ -5,6 +5,8 @@ import {
 } from "../services/leasing.services";
 import { isUserAdmin } from "../utils/helpers";
 
+
+// controller for hiring a new tractor
 export const leaseTractorRequest = async (req, res, next) => {
   const { userId } = req.userData;
   try {

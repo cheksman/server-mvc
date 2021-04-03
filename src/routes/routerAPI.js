@@ -75,7 +75,7 @@ router.put("/tractor/verify/:tractorId", auth, verifyTractor);
 router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
 
 // Leasing Routes
-router.post("/leasing/new-request", auth, leaseTractorRequest);
+router.post("/leasing/new-request", auth, leaseTractorRequest); // for request to hire a new tractor
 router.get("/leasing/all", auth, getAllLeasings);
 router.get("/leasing/user/all", auth, getAllUsersLeasings);
 router.get("/leasing/all/status=:status", auth, getAllLeasingsByStatus);
