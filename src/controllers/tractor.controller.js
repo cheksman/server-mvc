@@ -47,13 +47,20 @@ export const getAllTractors = async (req, res, next) => {
 
 // for adding new tractors
 export const addNewTractor = async (req, res, next) => {
-  const { values } = req.body;
+  // destructure the values from req,body
+  const { ...values } = req.body;
 
-  const reqVal = JSON.parse(values); // to convert text into a JavaScript object:
+  // convert to javascript object
+  const reqVal = JSON.parse(JSON.stringify(values)); 
+
+  // get the uploaded image from req.files
   const tractorImage = req.files && req.files.file;
+
+  
   const { userId } = req.userData;
   try {
     if (!tractorImage) {
+      console.log("no image added")
       let cResponse = {
         secure_url:
           "https://res.cloudinary.com/tractrac-global/image/upload/v1613478588/placeholder_ul8hjl.webp",
