@@ -58,14 +58,21 @@ router.post("/user/webcreate", createWebLead);
 router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
 router.get("/entries/investors/:pageNumber&:limit", auth, getPagedInvestors);
 router.get("/entries/all-entries/:leadType", auth, getAllEntries);
+
+// route for getting all investors
 router.get("/entries/all-investors", auth, getAllInvestors);
 
 // Tractor Routes
+
 router.post("/tractor/add-new", auth, addNewTractor);
 router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
 router.get("/tractor/all", auth, getAllTractors);
+
+// to update a tractor after verification
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
-router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor);
+
+// 
+router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
 
 // Leasing Routes
 router.post("/leasing/new-request", auth, leaseTractorRequest);

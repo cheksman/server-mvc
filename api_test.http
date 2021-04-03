@@ -6,7 +6,7 @@ POST http://localhost:5000/api/v1/login/
 content-type: application/json
 
 {
-    "phoneNumber": "07037541482",
+    "phoneNumber": "08064648720",
     "password": "admin12345"
 }
 
@@ -17,10 +17,17 @@ POST http://localhost:5000/api/v1/signup/
 Content-type: application/json
 
 {
-    "phoneNumber": "08064648720",
+    "phoneNumber": "07037541482",
     "password": "admin12345",
     "email": "superadmin@gmail.com",
     "firstName": "Baron",
     "lastName": "Chibuike",
     "userRole": "admin"
 }
+
+###
+
+# for getting all investors
+GET http://localhost:5000/api/v1/entries/all-investors/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzIyNjI1NiwiZXhwIjoxNjE3ODMxMDU2fQ.NHDkDLpjpwAujAYSeekD6dF6-t6FyyHlVcjp-KJEPhc
