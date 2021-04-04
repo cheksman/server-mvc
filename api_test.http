@@ -1,18 +1,16 @@
 # To use this extension please install HTTP Client
 
 
-# For making a post request to login a user
+### For making a post request to login a user
 POST http://localhost:5000/api/v1/login/
 content-type: application/json
 
 {
-    "phoneNumber": "07037541481",
+    "phoneNumber": "07037541482",
     "password": "admin12345"
 }
 
-###
-
-# for testing the post request to register a user
+### for testing the post request to register a user
 POST http://localhost:5000/api/v1/signup/
 Content-type: application/json
 
@@ -25,16 +23,14 @@ Content-type: application/json
     "userRole": "admin"
 }
 
-###
 
-# for getting all investors
+### for getting all investors
 GET http://localhost:5000/api/v1/entries/all-investors/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhcm9uY2hpYmlrZUBnbWFpbC5jb20iLCJ1c2VyUm9sZSI6WyJ1c2VyIl0sImFjdGl2ZSI6dHJ1ZSwidXNlcklkIjoiNjA1YmJjNzU0ODNlMTQ1ZDBiMTdhZjc5IiwiZm5hbWUiOiJBbm96aWUiLCJsbmFtZSI6IkNoaWJ1aWtlbSIsImlhdCI6MTYxNzUwODk0OSwiZXhwIjoxNjE3NTk1MzQ5fQ.jISolYyWDK0s5ScM9DvwIOtiDi1ysQDDLW3pR4Dszog
 
-###
 
-# for adding a new tractor
+### for adding a new tractor
 POST http://localhost:5000/api/v1/tractor/add-new/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJSb2xlIjpbInVzZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVlMGMyNGFlMjcyYmZkNmFkMDk1YzQiLCJmbmFtZSI6IkdlbmVyYWwiLCJsbmFtZSI6IldhcnJpb3IiLCJpYXQiOjE2MTc1MDkwMjYsImV4cCI6MTYxNzU5NTQyNn0.UaZ0C7Xr_WltriqA3ZwDCs0NKv1KrHA44khCQgFZcwI
@@ -57,18 +53,14 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
     "status": "Unverified"
 }
 
-###
-
-# Get all available tractors
+### Get all available tractors
 
 GET http://localhost:5000/api/v1/tractor/all/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzQ1NzA3NSwiZXhwIjoxNjE3NTQzNDc1fQ.-f_Pm4V-ZTjNob5I484-tLF9b3kkjQb4GWTtdHvRLB8
 
 
-###
-
-# Request to hire a new tractor
+### Request to hire a new tractor
 
 POST http://localhost:5000/api/v1/leasing/new-request/
 Content-Type: application/json
@@ -81,3 +73,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyY
     "startDate": "02-02-2021",
     "endDate": "03-01-2021"
 }
+
+### get all leasing request from the db
+
+GET http://localhost:5000/api/v1/leasing/all/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzQ1NzA3NSwiZXhwIjoxNjE3NTQzNDc1fQ.-f_Pm4V-ZTjNob5I484-tLF9b3kkjQb4GWTtdHvRLB8
+
+
+### for getting all the lease request made by the logged in user
+
+GET http://localhost:5000/api/v1/leasing/user/all/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJSb2xlIjpbInVzZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVlMGMyNGFlMjcyYmZkNmFkMDk1YzQiLCJmbmFtZSI6IkdlbmVyYWwiLCJsbmFtZSI6IldhcnJpb3IiLCJpYXQiOjE2MTc1MzIxNzgsImV4cCI6MTYxNzYxODU3OH0.XTYcK4VvwULaLJhQIOxerdBG4wS6c9QnIVpf_n6OWZ0

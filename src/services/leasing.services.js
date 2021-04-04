@@ -21,7 +21,8 @@ export const getAllLeasingsService = async () => {
 };
 
 export const getQueriedLeasingsService = async (queries) => {
-  return await leasingModel.find({ ...queries }).populate("leasor", "tractorsAssigned").lean().exec();
+  const res = await leasingModel.find({ ...queries }).populate("leasor", "tractorsAssigned").lean().exec();
+  return res
 };
 
 
