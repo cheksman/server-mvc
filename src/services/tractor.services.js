@@ -24,6 +24,7 @@ export const getQueriedTractorsService = async (userId) => {
   return await tractorModel.find({ user: userId }).populate("user", "assignedTo").lean().exec();
 };
 
+// for saving new tractors to the db
 export const saveTractorService = async (
   reqVal,
   res,
@@ -46,7 +47,8 @@ export const saveTractorService = async (
     tracker = "",
     state = "",
     lga = "",
-    town = "",
+    address = "",
+    status = ""
   } = reqVal;
 
   try {
@@ -66,7 +68,7 @@ export const saveTractorService = async (
       tracker: tracker,
       state: state,
       lga: lga,
-      town: town,
+      address: address,
       tractorImageUrl: cloudinaryResponse.secure_url,
     });
     if (!newTractor) {

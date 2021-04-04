@@ -1,0 +1,84 @@
+# To use this extension please install HTTP Client
+
+
+# For making a post request to login a user
+POST http://localhost:5000/api/v1/login/
+content-type: application/json
+
+{
+    "phoneNumber": "08064648720",
+    "password": "admin12345"
+}
+
+###
+
+# for testing the post request to register a user
+POST http://localhost:5000/api/v1/signup/
+Content-type: application/json
+
+{
+    "phoneNumber": "07037541482",
+    "password": "admin12345",
+    "email": "superadmin@gmail.com",
+    "firstName": "Baron",
+    "lastName": "Chibuike",
+    "userRole": "admin"
+}
+
+###
+
+# for getting all investors
+GET http://localhost:5000/api/v1/entries/all-investors/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzIyNjI1NiwiZXhwIjoxNjE3ODMxMDU2fQ.NHDkDLpjpwAujAYSeekD6dF6-t6FyyHlVcjp-KJEPhc
+
+
+###
+
+# for adding a new tractor
+POST http://localhost:5000/api/v1/tractor/add-new/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzQ1NzA3NSwiZXhwIjoxNjE3NTQzNDc1fQ.-f_Pm4V-ZTjNob5I484-tLF9b3kkjQb4GWTtdHvRLB8
+
+{
+    "brand": "caterpillar2",
+    "model": "toyota2",
+    "tractorType": "hover hummer2",
+    "purchaseYear": 2013,
+    "manufactureYear": 2029,
+    "chasisNum": "30938",
+    "plateNum": "VWH1023",
+    "insurance": "Insured",
+    "insuranceCompany": "e4e",
+    "insuranceExpiry": 2030,
+    "state": "Abuja",
+    "lga": "Bwari",
+    "address": "Garki gimbiya",
+    "tracker": "No",
+    "status": "Unverified"
+}
+
+###
+
+# Get all available tractors
+
+GET http://localhost:5000/api/v1/tractor/all/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzQ1NzA3NSwiZXhwIjoxNjE3NTQzNDc1fQ.-f_Pm4V-ZTjNob5I484-tLF9b3kkjQb4GWTtdHvRLB8
+
+
+###
+
+# Request to hire a new tractor
+
+POST http://localhost:5000/api/v1/leasing/new-request/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzQ1NzA3NSwiZXhwIjoxNjE3NTQzNDc1fQ.-f_Pm4V-ZTjNob5I484-tLF9b3kkjQb4GWTtdHvRLB8
+
+{
+    "farmSize": "400 * 1000",
+    "farmLocation": "Bwari",
+    "tractorNumberRequired": 3,
+    "startDate": "02-02-2021",
+    "endDate": "03-01-2021"
+}

@@ -17,7 +17,7 @@
 # npmjs
 /dist
 package-lock.js
-# .env
+.env
 
 # misc
 .DS_Store
