@@ -20,18 +20,22 @@ export const leaseTractorRequest = async (req, res, next) => {
 };
 
 export const getAllLeasings = async (req, res, next) => {
+  // only admin user's are allowed to retrieve data from this controller
   const { userRole } = req.userData;
   try {
     if (isUserAdmin(userRole)) {
       const leasings = await getAllLeasingsService();
       if (leasings && leasings.length) {
-        return res.status(201).json({
+        return res.status(200).json({ //TODO: explain why I changed it from 201 to 200
           message: "successful",
           data: leasings,
         });
       }
-      return res.status(500).json({
-        message: "Could not get requests",
+      // return res.status(500).json({ //TODO: explain why I commented this out
+      //   message: "Could not get requests",
+      // });
+      return res.status(200).json({
+        message: "No lease request has been made at this time",
       });
     }
     return res.status(401).json({
