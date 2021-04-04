@@ -1,5 +1,6 @@
 import userModel from "../models/user.model";
 import agentProgrammeModel from "../models/agent-programme.model";
+import excelToJson from 'convert-excel-to-json';
 import { uploadFile } from "../utils/uploader";
 import { isUserAdmin } from "../utils/helpers";
 import {
@@ -7,6 +8,8 @@ import {
   findUser,
   findUserById,
 } from "../services/user.services";
+import fs from 'fs';
+import {sendMail} from '../services/mail.services'
 
 export const getAllUsers = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -207,4 +210,117 @@ export const getSingleUser = async (req, res, next) => {
       error: error,
     });
   }
+};
+
+export const uploadBulkUsersFromExcel = (req, res, next) => {
+  const { userRole } = req.userData;
+  if (userRole !== 'admin') {
+    return res
+      .status(403)
+      .json({ message: 'Only Admins can upload Bulk Users' });
+  }
+  const excelFile = req.files.file;
+  excelFile.mv(`${__dirname}-${excelFile.name}`, async err => {
+    if (err) {
+      return next({
+        message: 'Generating Details from excel failed',
+        error: err,
+      });
+    }
+    try {
+      const result = await excelToJson({
+        source: fs.readFileSync(`${__dirname}-${excelFile.name}`),
+        header: {
+          rows: 1,
+        },
+        sheets: ['Sheet1'],
+        columnToKey: {
+          A: 'fname',
+          B: 'lname',
+          C: 'phone',
+          D: 'email',
+          E: 'gender',
+        },
+      });
+      fs.unlinkSync(`${__dirname}-${excelFile.name}`);
+      const { Sheet1: sheet } = result;
+      Promise.allSettled(
+        sheet.map(
+          ({
+            fname = '',
+            lname = '',
+            phone,
+            email,
+            gender,
+          }) =>
+            new Promise(async (resolve, reject) => {
+              const password = phone;
+              let hashPassword;
+              bcrypt.hash(password, 9, (err, hash) => {
+                if (err) {
+                  Sentry.captureException(err);
+                }
+                hashPassword = hash;
+              });
+              try {
+                if (phone) {
+                  const createdUser = await userModel.findOneAndUpdate(
+                        { phone },
+                        {
+                          $set: {
+                            ...(fname && { fname }),
+                            ...(lname && { lname }),
+                            ...(gender && { gender }),
+                            password: hashPassword,
+                            userRole: ['farmer', 'user']
+                          },
+                        },
+                        {
+                          new: true,
+                          upsert: true,
+                          rawResult: true,
+                          lean: true,
+                        }
+                      );
+                  if (createdUser) {
+                    if (email && !createdUser.lastErrorObject.updatedExisting) {
+                      await sendMail(
+                        email,
+                        {
+                          name: 'TracTrac MSL',
+                          email: 'info@tractrac.co',
+                        },
+                        fname,
+                        lname
+                      )
+                      return res.status(201).json({message: "Created successfully"})
+                  }
+                } else {
+                  return reject('User not valid');
+                }
+              }
+
+              return res.status(404).json({message: "User phone not found"})
+             } catch (error) {
+                return reject(error.message);
+              }
+            })
+        )
+      ).then(results => {
+        const savedUsers = results.reduce((acc, curr) => {
+          if (curr && curr.value && curr.value.ok === 1) return acc + 1;
+          return acc;
+        }, 0);
+        return res.status(201).json({
+          message: `${savedUsers} users created or updated successfully`,
+          data: results,
+        });
+      });
+    } catch (error) {
+      return next({
+        message: 'Generating Users from excel failed',
+        error,
+      });
+    }
+  });
 };
