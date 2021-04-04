@@ -34,8 +34,8 @@ export const findUserByIdAndUpdate = async (
     }
 
     return res.status(500).json({
-      message: "User roles not an array"
-    })
+      message: "User roles not an array",
+    });
   } catch (error) {
     return next({
       message: "Error saving user to database",
@@ -45,6 +45,7 @@ export const findUserByIdAndUpdate = async (
 };
 
 export const saveUser = async (req, res, next, userRole) => {
+  // destructure the resquest body parameter
   const {
     phoneNumber,
     email,
@@ -53,7 +54,9 @@ export const saveUser = async (req, res, next, userRole) => {
     lastName,
     gender,
   } = req.body;
+
   try {
+    // create a new user
     const newUser = await userModel.create({
       phone: phoneNumber,
       fname: firstName,
@@ -63,9 +66,15 @@ export const saveUser = async (req, res, next, userRole) => {
       ...(email !== "" && { email: email }),
       ...(gender && { gender: gender }),
     });
+
+    // if the user was created, generate a token for him using the newToken method
     if (newUser) {
       const token = newToken(newUser);
+
+      // convert to a object
       const val = newUser.toObject();
+
+      // if val is true, destructure it and get the passowrd(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
         return res.status(201).json({
@@ -74,6 +83,7 @@ export const saveUser = async (req, res, next, userRole) => {
           data: {
             ...rest,
           },
+          //TODO: why pass userRole here when it's part of the user object
           userRole: val.userRole,
         });
       }

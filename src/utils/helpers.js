@@ -1,5 +1,7 @@
 const currentUserRole = (roles, role) => {
+  // here we passing in an array of roles  and check that the length of the array is not zero
   if (Array.isArray(roles) && roles.length) {
+    // check that the specified role is inside the array of roles: if it is, we return true
     return roles.includes(role);
   }
   return false;

@@ -24,12 +24,11 @@ export const getQueriedLeasingsService = async (queries) => {
   return await leasingModel.find({ ...queries }).populate("leasor", "tractorsAssigned").lean().exec();
 };
 
-export const saveLeaseRequestService = async (
-  req,
-  res,
-  next,
-  leasorId
-) => {
+
+// for hiring a new tractor
+export const saveLeaseRequestService = async ( req, res, next, leasorId) => {
+
+  // get the necessary values from req.body and pass either empty strings or new as defaults
   const {
     farmLocation = "",
     tractorNumberRequired = "",
@@ -39,6 +38,7 @@ export const saveLeaseRequestService = async (
   } = req.body;
 
   try {
+    // save the values to the db and return a response
     const newLeaseRequest = await leasingModel.create({
       leasor: leasorId,
       farmSize,
@@ -47,11 +47,15 @@ export const saveLeaseRequestService = async (
       startDate,
       endDate
     });
+
+    // if saving to db fails, return this
     if (!newLeaseRequest) {
       return res.status(500).json({
         message: "Could not make request",
       });
     }
+
+    // if saving was successful, return this
     return res.status(200).json({
       message: "Request successfully made",
       data: newLeaseRequest,
