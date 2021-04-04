@@ -60,7 +60,6 @@ export const addNewTractor = async (req, res, next) => {
   const { userId } = req.userData;
   try {
     if (!tractorImage) {
-      console.log("no image added")
       let cResponse = {
         secure_url:
           "https://res.cloudinary.com/tractrac-global/image/upload/v1613478588/placeholder_ul8hjl.webp",

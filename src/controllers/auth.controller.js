@@ -11,7 +11,6 @@ export const createUser = async (req, res, next) => {
 
     // check if a user with the phoneNumber entered already exist
     user = await findUser(phoneNumber); //TODO: this returns null even when a number already exist
-    console.log(user, "user")
     if (user) {
       return res.status(403).json({
         message: `Forbiden, User ${phoneNumber} already exists`,

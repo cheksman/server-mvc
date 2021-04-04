@@ -95,7 +95,6 @@ export const getPagedUsers = async (req, res, next) => {
       data: users,
     });
   } catch (error) {
-    // console.log(error)
     return next({
       message: "Error getting users, please try again later",
       error: error,

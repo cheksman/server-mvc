@@ -67,8 +67,6 @@ export const saveUser = async (req, res, next, userRole) => {
       ...(gender && { gender: gender }),
     });
 
-    console.log("running to this point");
-
     // if the user was created, generate a token for him using the newToken method
     if (newUser) {
       const token = newToken(newUser);
