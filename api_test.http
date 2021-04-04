@@ -6,7 +6,7 @@ POST http://localhost:5000/api/v1/login/
 content-type: application/json
 
 {
-    "phoneNumber": "07037541482",
+    "phoneNumber": "08064648720",
     "password": "admin12345"
 }
 
@@ -86,3 +86,34 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQ
 GET http://localhost:5000/api/v1/leasing/user/all/
 Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJSb2xlIjpbInVzZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVlMGMyNGFlMjcyYmZkNmFkMDk1YzQiLCJmbmFtZSI6IkdlbmVyYWwiLCJsbmFtZSI6IldhcnJpb3IiLCJpYXQiOjE2MTc1MzIxNzgsImV4cCI6MTYxNzYxODU3OH0.XTYcK4VvwULaLJhQIOxerdBG4wS6c9QnIVpf_n6OWZ0
+
+
+### GET a user Tractors
+GET http://localhost:5000/api/v1/tractor/605f5c2a64ce5b62ec7ff8d7/tractors/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJSb2xlIjpbInVzZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVlMGMyNGFlMjcyYmZkNmFkMDk1YzQiLCJmbmFtZSI6IkdlbmVyYWwiLCJsbmFtZSI6IldhcnJpb3IiLCJpYXQiOjE2MTc1MzIxNzgsImV4cCI6MTYxNzYxODU3OH0.XTYcK4VvwULaLJhQIOxerdBG4wS6c9QnIVpf_n6OWZ0
+
+
+### for getting the status of all lease request
+
+GET http://localhost:5000/api/v1/leasing/all/status=assigned/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzUzNzkxMCwiZXhwIjoxNjE3NjI0MzEwfQ.mTDFOel0M3sCc2fk3VtVhMZgyHIUXODAszn13aYiPl8
+
+
+### NOT RETURNING ANYTHING. FIND OUT WHY LATER
+### Get activation status of tractors 
+
+GET http://localhost:5000/api/v1/tractor/activation-status/ 
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzUzNzkxMCwiZXhwIjoxNjE3NjI0MzEwfQ.mTDFOel0M3sCc2fk3VtVhMZgyHIUXODAszn13aYiPl8
+
+
+### for assigning a tractor to a user
+PUT http://localhost:5000/api/v1/tractor/606883490094c3d1000998fe/assign-to=6068bfa9087895e74533165a/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyYWRtaW5AZ21haWwuY29tIiwidXNlclJvbGUiOlsiYWRtaW4iXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVmNWMyYTY0Y2U1YjYyZWM3ZmY4ZDciLCJmbmFtZSI6IkJhcm9uIiwibG5hbWUiOiJDaGlidWlrZSIsImlhdCI6MTYxNzU0MzM5NywiZXhwIjoxNjE3NjI5Nzk3fQ.Gvdf2UncUSdie35jpJCM8izELJvCCA4JrrRPw1vsmdM
+
+{
+    "status": "accepted"
+}

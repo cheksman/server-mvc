@@ -85,13 +85,13 @@ export const getAllLeasingsByStatus = async (req, res, next) => {
         status: status,
       });
       if (leasings && leasings.length) {
-        return res.status(201).json({
+        return res.status(200).json({
           message: "successful",
           data: leasings,
         });
       }
-      return res.status(500).json({
-        message: "Could not get requests",
+      return res.status(200).json({
+        message: "No lease with your requested status was found",
       });
     }
     return res.status(401).json({
