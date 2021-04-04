@@ -40,9 +40,9 @@ Content-Type: application/json
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImFkbWluQGdtYWlsLmNvbSIsInVzZXJSb2xlIjpbInVzZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDVlMGMyNGFlMjcyYmZkNmFkMDk1YzQiLCJmbmFtZSI6IkdlbmVyYWwiLCJsbmFtZSI6IldhcnJpb3IiLCJpYXQiOjE2MTc1MDkwMjYsImV4cCI6MTYxNzU5NTQyNn0.UaZ0C7Xr_WltriqA3ZwDCs0NKv1KrHA44khCQgFZcwI
 
 {
-    "brand": "caterpillar2",
-    "model": "toyota2",
-    "tractorType": "hover hummer2",
+    "brand": "Land Crusher",
+    "model": "Benz",
+    "tractorType": "Hammer",
     "purchaseYear": 2013,
     "manufactureYear": 2029,
     "chasisNum": "30938",
