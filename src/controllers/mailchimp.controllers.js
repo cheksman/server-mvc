@@ -57,7 +57,6 @@ export const createMailchimpAudience = async (req, res, next) => {
 
 export const subscribeContactToMailchimp = async (req, res, next) => {
   const { fname, lname, email } = req.body
-  console.log(req.body)
   try {
     const listId = "fc4d473c00";
 
@@ -78,7 +77,6 @@ export const subscribeContactToMailchimp = async (req, res, next) => {
       message: "Error subscribing to newsletter"
     })
   } catch (error) {
-    console.log(error)
     return next({
       message: "Could not subscribe email to Newsletter",
       err: error

@@ -1,6 +1,9 @@
 import jwt from 'jsonwebtoken'
 
 export const newToken = (user) =>
+// we are generating a new token for a user, passing in our secret key and settting the
+// token to expire in 7days
+
   jwt.sign(
     {
       email: user.email,

@@ -8,6 +8,7 @@ import {
   getPagedUsers,
   getSingleUser,
   updateUserRole,
+  uploadBulkUsersFromExcel,
 } from "../controllers/user.controllers";
 import {
   createLead,
@@ -25,7 +26,8 @@ import {
   getActivationStatus,
   getAllTractors,
   assignTractor,
-  verifyTractor
+  verifyTractor,
+  assignTractorToUsers
 } from "../controllers/tractor.controller";
 import {
   getAllLeasings,
@@ -48,7 +50,8 @@ router.use(fileUpload());
 router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 router.post("/user/update/role/:userId", auth, updateUserRole);
-router.get("/user/single", auth, getSingleUser)
+router.get("/user/single", auth, getSingleUser);
+router.post('/users/bulk-create', auth, uploadBulkUsersFromExcel);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
@@ -58,17 +61,28 @@ router.post("/user/webcreate", createWebLead);
 router.get("/entries/:leadType/:pageNumber&:limit", auth, getPagedEntries);
 router.get("/entries/investors/:pageNumber&:limit", auth, getPagedInvestors);
 router.get("/entries/all-entries/:leadType", auth, getAllEntries);
+
+// route for getting all investors
 router.get("/entries/all-investors", auth, getAllInvestors);
 
 // Tractor Routes
+
 router.post("/tractor/add-new", auth, addNewTractor);
 router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
 router.get("/tractor/all", auth, getAllTractors);
+
+// to update a tractor after verification
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
-router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor);
+
+// 
+//router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
+
+//TODO: explain that this was aded recently
+router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractorToUsers)
+
 
 // Leasing Routes
-router.post("/leasing/new-request", auth, leaseTractorRequest);
+router.post("/leasing/new-request", auth, leaseTractorRequest); // for request to hire a new tractor
 router.get("/leasing/all", auth, getAllLeasings);
 router.get("/leasing/user/all", auth, getAllUsersLeasings);
 router.get("/leasing/all/status=:status", auth, getAllLeasingsByStatus);

@@ -12,7 +12,7 @@ const addPostsService = async (reqVal, req, res, next, featuredImage) => {
       title: title,
       excerpt: excerpt,
       post: post,
-      postAuthor: postAuthor,
+      postAuthor: postAuthor, //TODO: find out the difference between postAuthor and author
       author: userId,
     });
 

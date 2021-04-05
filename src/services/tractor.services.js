@@ -1,7 +1,11 @@
 import tractorModel from "../models/tractor.model";
 
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
 export const findTractorService = async (tractorId) => {
-  return await tractorModel.findById({ tractorId }).populate('user', 'assignedTo').lean().exec();
+  const res = await tractorModel.findById({  _id: ObjectId(tractorId)}).populate('user', 'assignedTo').lean().exec();
+  return res
 };
 
 export const findTractorAndUpdateService = async (tractorId, props) => {
@@ -24,6 +28,7 @@ export const getQueriedTractorsService = async (userId) => {
   return await tractorModel.find({ user: userId }).populate("user", "assignedTo").lean().exec();
 };
 
+// for saving new tractors to the db
 export const saveTractorService = async (
   reqVal,
   res,
@@ -46,7 +51,8 @@ export const saveTractorService = async (
     tracker = "",
     state = "",
     lga = "",
-    town = "",
+    address = "",
+    status = ""
   } = reqVal;
 
   try {
@@ -66,7 +72,7 @@ export const saveTractorService = async (
       tracker: tracker,
       state: state,
       lga: lga,
-      town: town,
+      address: address,
       tractorImageUrl: cloudinaryResponse.secure_url,
     });
     if (!newTractor) {
