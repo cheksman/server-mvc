@@ -138,7 +138,7 @@ export const verifyTractor = async (req, res, next) => {
         status: "verified",
       });
       if (tractor) {
-        return res.status(201).json({
+        return res.status(200).json({
           message: "Tractor Verified",
           data: tractor,
         });
