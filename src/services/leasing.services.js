@@ -31,7 +31,6 @@ export const getLeasingRequestAndUpdateService = async (
   tractorId,
   status
 ) => {
-  console.log("service running");
   await leasingModel
     .findByIdAndUpdate(leasingId, {
       tractorsAssigned: tractorId,
@@ -59,7 +58,11 @@ export const getAllLeasingsService = async () => {
 export const getQueriedLeasingsService = async (queries) => {
   const res = await leasingModel
     .find({ ...queries })
-    .populate("leasor", "tractorsAssigned")
+    .populate({
+      path: "leasor",
+      select: { fname: 1, lname: 1 },
+    })
+    .populate({ path: "tractorsAssigned", select: { plateNum: 1 } })
     .lean()
     .exec();
   return res;
