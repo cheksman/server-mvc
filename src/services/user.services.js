@@ -3,13 +3,13 @@ import { newToken } from "../utils/auth";
 
 export const findUser = async (userPhone) => {
   const res = await userModel.findOne({ phone: userPhone }).lean().exec();
-  return res
-}
+  return res;
+};
 
-export const findUserById = async (userId) =>{
+export const findUserById = async (userId) => {
   const res = await userModel.findById(userId).lean().exec();
-  return res
-}
+  return res;
+};
 export const findUserByIdAndUpdate = async (
   userId,
   prevRole,
@@ -44,7 +44,7 @@ export const findUserByIdAndUpdate = async (
   }
 };
 
-export const saveUser = async (req, res, next, userRole) => {
+export const saveUser = async (req, res, next, user) => {
   // destructure the resquest body parameter
   const {
     phoneNumber,
@@ -52,7 +52,7 @@ export const saveUser = async (req, res, next, userRole) => {
     password,
     firstName,
     lastName,
-    gender,
+    userRole,
   } = req.body;
 
   try {
@@ -64,7 +64,7 @@ export const saveUser = async (req, res, next, userRole) => {
       userRole: userRole,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
-      ...(gender && { gender: gender }),
+      // ...(gender && { gender: gender }),
     });
 
     // if the user was created, generate a token for him using the newToken method
