@@ -26,7 +26,8 @@ import {
   getActivationStatus,
   getAllTractors,
   assignTractor,
-  verifyTractor
+  verifyTractor,
+  assignTractorToUsers
 } from "../controllers/tractor.controller";
 import {
   getAllLeasings,
@@ -50,7 +51,7 @@ router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 router.post("/user/update/role/:userId", auth, updateUserRole);
 router.get("/user/single", auth, getSingleUser);
-router.post('/users/bulk-upload', auth, uploadBulkUsersFromExcel);
+router.post('/users/bulk-create', auth, uploadBulkUsersFromExcel);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
@@ -74,7 +75,11 @@ router.get("/tractor/all", auth, getAllTractors);
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
 
 // 
-router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
+//router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
+
+//TODO: explain that this was aded recently
+router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractorToUsers)
+
 
 // Leasing Routes
 router.post("/leasing/new-request", auth, leaseTractorRequest); // for request to hire a new tractor

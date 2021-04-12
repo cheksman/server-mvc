@@ -1,33 +1,75 @@
 import leasingModel from "../models/leasing.model";
 
 export const findLeasingRequestService = async (leasingId) => {
-  return await leasingModel.findById(leasingId).populate('leasor', 'tractorsAssigned').lean().exec();
+  return await leasingModel
+    .findById(leasingId)
+    .populate("leasor", "tractorsAssigned")
+    .lean()
+    .exec();
 };
 
 export const findLeasingRequestAndUpdateService = async (leasingId, props) => {
-  return await leasingModel.findByIdAndUpdate(leasingId, {
-    $set: {
-      ...props
-    }},
-    {
-      new: true,
-      upsert: true
-    }
-  ).populate('leasor', 'tractorsAssigned')
+  return await leasingModel
+    .findByIdAndUpdate(
+      leasingId,
+      {
+        $set: {
+          ...props,
+        },
+      },
+      {
+        new: true,
+        upsert: true,
+      }
+    )
+    .populate("leasor", "tractorsAssigned");
+};
+
+// custom built for assign tractors
+export const getLeasingRequestAndUpdateService = async (
+  leasingId,
+  tractorId,
+  status
+) => {
+  await leasingModel
+    .findByIdAndUpdate(leasingId, {
+      tractorsAssigned: tractorId,
+      status: status,
+    })
+    .populate("leasor", "tractorsAssigned");
+  const res = await leasingModel
+    .findById(leasingId)
+    .populate("leasor", "tractorsAssigned");
+  return res;
 };
 
 export const getAllLeasingsService = async () => {
-  return await leasingModel.find().populate("leasor", "tractorsAssigned").lean().exec();
+  return await leasingModel
+    .find()
+    .populate({
+      path: "leasor",
+      select: { fname: 1, lname: 1 },
+    })
+    .populate({ path: "tractorsAssigned", select: { plateNum: 1 } })
+    .lean()
+    .exec();
 };
 
 export const getQueriedLeasingsService = async (queries) => {
-  return await leasingModel.find({ ...queries }).populate("leasor", "tractorsAssigned").lean().exec();
+  const res = await leasingModel
+    .find({ ...queries })
+    .populate({
+      path: "leasor",
+      select: { fname: 1, lname: 1 },
+    })
+    .populate({ path: "tractorsAssigned", select: { plateNum: 1 } })
+    .lean()
+    .exec();
+  return res;
 };
 
-
 // for hiring a new tractor
-export const saveLeaseRequestService = async ( req, res, next, leasorId) => {
-
+export const saveLeaseRequestService = async (req, res, next, leasorId) => {
   // get the necessary values from req.body and pass either empty strings or new as defaults
   const {
     farmLocation = "",
@@ -45,7 +87,7 @@ export const saveLeaseRequestService = async ( req, res, next, leasorId) => {
       farmLocation,
       tractorNumberRequired,
       startDate,
-      endDate
+      endDate,
     });
 
     // if saving to db fails, return this

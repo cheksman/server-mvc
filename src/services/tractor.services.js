@@ -1,7 +1,11 @@
 import tractorModel from "../models/tractor.model";
 
+const mongoose = require('mongoose');
+const ObjectId = mongoose.Types.ObjectId;
+
 export const findTractorService = async (tractorId) => {
-  return await tractorModel.findById({ tractorId }).populate('user', 'assignedTo').lean().exec();
+  const res = await tractorModel.findById({  _id: ObjectId(tractorId)}).populate('user', 'assignedTo').lean().exec();
+  return res
 };
 
 export const findTractorAndUpdateService = async (tractorId, props) => {

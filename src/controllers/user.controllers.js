@@ -9,6 +9,8 @@ import {
   findUserById,
 } from "../services/user.services";
 import fs from 'fs';
+import bcrypt from 'bcryptjs';
+import * as Sentry from "@sentry/node";
 import {sendMail} from '../services/mail.services'
 
 export const getAllUsers = async (req, res, next) => {
@@ -213,7 +215,7 @@ export const getSingleUser = async (req, res, next) => {
 
 export const uploadBulkUsersFromExcel = (req, res, next) => {
   const { userRole } = req.userData;
-  if (userRole !== 'admin') {
+  if (!isUserAdmin(userRole)) {
     return res
       .status(403)
       .json({ message: 'Only Admins can upload Bulk Users' });

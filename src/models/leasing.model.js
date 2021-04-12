@@ -11,7 +11,7 @@ const leasorSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["completed", "assigned", "processing", "declined"],
+      enum: ["completed", "assigned", "processing", "declined", "accepted"],
       default: "processing",
     },
     tractorsAssigned: [{
