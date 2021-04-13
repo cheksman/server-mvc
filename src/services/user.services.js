@@ -18,6 +18,9 @@ export const findUserByIdAndUpdateProfile = async (userId, data) => {
 
   // pass in the id on the update status in the finById method and return the updated profile
   const updatedProfile = await userModel.findById(updateProfile.id);
+
+  // we remove the password details to avoid displaying them to the user for security reasons
+  updatedProfile.password = "";
   return updatedProfile;
 };
 

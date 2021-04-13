@@ -338,6 +338,13 @@ export const updateUserProfile = async (req, res, next) => {
       });
     }
 
+    if (data.password) {
+      return res.status(500).json({
+        message:
+          "You are not allowed to update your password this way, navigate to change password",
+      });
+    }
+
     const userNewData = await findUserByIdAndUpdateProfile(
       userId,
       data,

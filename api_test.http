@@ -30,11 +30,9 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhcm9uY
 
 {
     "phoneNumber": "07037541482",
-    "password": "admin12345",
-    "email": "updateworked@gmail.com",
-    "fname": "Ime",
-    "lname": "Ihuoma",
-    "userRole": "admin"
+    "email": "ji@gmail.com",
+    "fname": "Micheal",
+    "lname": "Jk"
 }
 
 
