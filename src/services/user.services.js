@@ -10,6 +10,21 @@ export const findUserById = async (userId) => {
   const res = await userModel.findById(userId).lean().exec();
   return res;
 };
+
+// for updating a user profile
+export const findUserByIdAndUpdateProfile = async (userId, data) => {
+  // find and update a user profile using his id
+  const updateProfile = await userModel.findByIdAndUpdate(userId, data);
+
+  // pass in the id on the update status in the finById method and return the updated profile
+  const updatedProfile = await userModel.findById(updateProfile.id);
+
+  // we remove the password details to avoid displaying them to the user for security reasons
+  updatedProfile.password = "";
+  return updatedProfile;
+};
+
+// updating user role
 export const findUserByIdAndUpdate = async (
   userId,
   prevRole,

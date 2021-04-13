@@ -9,6 +9,7 @@ import {
   getSingleUser,
   updateUserRole,
   uploadBulkUsersFromExcel,
+  updateUserProfile,
 } from "../controllers/user.controllers";
 import {
   createLead,
@@ -27,14 +28,14 @@ import {
   getAllTractors,
   assignTractor,
   verifyTractor,
-  assignTractorToUsers
+  assignTractorToUsers,
 } from "../controllers/tractor.controller";
 import {
   getAllLeasings,
   getAllLeasingsByStatus,
   getAllUsersLeasings,
-  leaseTractorRequest
-} from "../controllers/leasing.controller"
+  leaseTractorRequest,
+} from "../controllers/leasing.controller";
 import { auth } from "../utils/auth";
 import { subscribeContactToMailchimp } from "./../controllers/mailchimp.controllers";
 import {
@@ -51,7 +52,8 @@ router.get("/user/all-users", auth, getAllUsers);
 router.get("/user/page=:pageNumber&:limit", auth, getPagedUsers);
 router.post("/user/update/role/:userId", auth, updateUserRole);
 router.get("/user/single", auth, getSingleUser);
-router.post('/users/bulk-create', auth, uploadBulkUsersFromExcel);
+router.post("/users/bulk-create", auth, uploadBulkUsersFromExcel);
+router.patch("/user/updateProfile/:userId", auth, updateUserProfile);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
@@ -74,12 +76,15 @@ router.get("/tractor/all", auth, getAllTractors);
 // to update a tractor after verification
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
 
-// 
+//
 //router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractor); //TODO: complete this part
 
 //TODO: explain that this was aded recently
-router.put("/tractor/:tractorId/assign-to=:leasingId", auth, assignTractorToUsers)
-
+router.put(
+  "/tractor/:tractorId/assign-to=:leasingId",
+  auth,
+  assignTractorToUsers
+);
 
 // Leasing Routes
 router.post("/leasing/new-request", auth, leaseTractorRequest); // for request to hire a new tractor
