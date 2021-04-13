@@ -6,7 +6,7 @@ POST http://localhost:5000/api/v1/login/
 content-type: application/json
 
 {
-    "phoneNumber": "08064648720",
+    "phoneNumber": "07037541482",
     "password": "admin12345"
 }
 
@@ -22,6 +22,21 @@ Content-type: application/json
     "lastName": "Chibuike",
     "userRole": "admin"
 }
+
+### for testing the post request to update a user profile
+PATCH  http://localhost:5000/api/v1/user/updateProfile/605bbc75483e145d0b17af79/
+Content-type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJhcm9uY2hpYmlrZUBnbWFpbC5jb20iLCJ1c2VyUm9sZSI6WyJmYXJtZXIiXSwiYWN0aXZlIjp0cnVlLCJ1c2VySWQiOiI2MDViYmM3NTQ4M2UxNDVkMGIxN2FmNzkiLCJmbmFtZSI6IkFub3ppZSIsImxuYW1lIjoiQ2hpYnVpa2VtIiwiaWF0IjoxNjE4MzE1NjUxLCJleHAiOjE2MTg0MDIwNTF9.QSzNaV70lm3AXbw4d0STgeGk6uWcalrQNc0zq8-CBXI
+
+{
+    "phoneNumber": "07037541482",
+    "password": "admin12345",
+    "email": "updateworked@gmail.com",
+    "fname": "Ime",
+    "lname": "Ihuoma",
+    "userRole": "admin"
+}
+
 
 
 ### for getting all investors

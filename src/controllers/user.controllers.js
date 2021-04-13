@@ -1,17 +1,18 @@
 import userModel from "../models/user.model";
 import agentProgrammeModel from "../models/agent-programme.model";
-import excelToJson from 'convert-excel-to-json';
+import excelToJson from "convert-excel-to-json";
 import { uploadFile } from "../utils/uploader";
 import { isUserAdmin } from "../utils/helpers";
 import {
   findUserByIdAndUpdate,
   findUser,
   findUserById,
+  findUserByIdAndUpdateProfile,
 } from "../services/user.services";
-import fs from 'fs';
-import bcrypt from 'bcryptjs';
+import fs from "fs";
+import bcrypt from "bcryptjs";
 import * as Sentry from "@sentry/node";
-import {sendMail} from '../services/mail.services'
+import { sendMail } from "../services/mail.services";
 
 export const getAllUsers = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -218,13 +219,13 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
   if (!isUserAdmin(userRole)) {
     return res
       .status(403)
-      .json({ message: 'Only Admins can upload Bulk Users' });
+      .json({ message: "Only Admins can upload Bulk Users" });
   }
   const excelFile = req.files.file;
-  excelFile.mv(`${__dirname}-${excelFile.name}`, async err => {
+  excelFile.mv(`${__dirname}-${excelFile.name}`, async (err) => {
     if (err) {
       return next({
-        message: 'Generating Details from excel failed',
+        message: "Generating Details from excel failed",
         error: err,
       });
     }
@@ -234,26 +235,20 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
         header: {
           rows: 1,
         },
-        sheets: ['Sheet1'],
+        sheets: ["Sheet1"],
         columnToKey: {
-          A: 'fname',
-          B: 'lname',
-          C: 'phone',
-          D: 'email',
-          E: 'gender',
+          A: "fname",
+          B: "lname",
+          C: "phone",
+          D: "email",
+          E: "gender",
         },
       });
       fs.unlinkSync(`${__dirname}-${excelFile.name}`);
       const { Sheet1: sheet } = result;
       Promise.allSettled(
         sheet.map(
-          ({
-            fname = '',
-            lname = '',
-            phone,
-            email,
-            gender,
-          }) =>
+          ({ fname = "", lname = "", phone, email, gender }) =>
             new Promise(async (resolve, reject) => {
               const password = phone;
               let hashPassword;
@@ -266,48 +261,52 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
               try {
                 if (phone) {
                   const createdUser = await userModel.findOneAndUpdate(
-                        { phone },
-                        {
-                          $set: {
-                            ...(fname && { fname }),
-                            ...(lname && { lname }),
-                            ...(gender && { gender }),
-                            password: hashPassword,
-                            userRole: ['farmer', 'user']
-                          },
-                        },
-                        {
-                          new: true,
-                          upsert: true,
-                          rawResult: true,
-                          lean: true,
-                        }
-                      );
+                    { phone },
+                    {
+                      $set: {
+                        ...(fname && { fname }),
+                        ...(lname && { lname }),
+                        ...(gender && { gender }),
+                        password: hashPassword,
+                        userRole: ["farmer", "user"],
+                      },
+                    },
+                    {
+                      new: true,
+                      upsert: true,
+                      rawResult: true,
+                      lean: true,
+                    }
+                  );
                   if (createdUser) {
                     if (email && !createdUser.lastErrorObject.updatedExisting) {
                       await sendMail(
                         email,
                         {
-                          name: 'TracTrac MSL',
-                          email: 'info@tractrac.co',
+                          name: "TracTrac MSL",
+                          email: "info@tractrac.co",
                         },
                         fname,
                         lname
-                      )
-                      return res.status(201).json({message: "Created successfully"})
+                      );
+                      return res
+                        .status(201)
+                        .json({ message: "Created successfully" });
+                    }
+                  } else {
+                    return reject("User not valid");
                   }
-                } else {
-                  return reject('User not valid');
                 }
-              }
 
-              return res.status(404).json({message: "User phone not found"})
-             } catch (error) {
+                return res
+                  .status(404)
+                  .json({ message: "User phone not found" });
+              } catch (error) {
                 return reject(error.message);
               }
             })
         )
-      ).then(results => {
+      ).then((results) => {
         const savedUsers = results.reduce((acc, curr) => {
           if (curr && curr.value && curr.value.ok === 1) return acc + 1;
           return acc;
@@ -319,9 +318,44 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
       });
     } catch (error) {
       return next({
-        message: 'Generating Users from excel failed',
+        message: "Generating Users from excel failed",
         error,
       });
     }
   });
+};
+
+// For updating a user profile
+export const updateUserProfile = async (req, res, next) => {
+  const { userRole } = req.userData;
+  const { userId } = req.params;
+  const data = req.body;
+  try {
+    if (data.userRole && !isUserAdmin(userRole)) {
+      return res.status(500).json({
+        message:
+          "You are not allowed to update your user role. Only admins can do that",
+      });
+    }
+
+    const userNewData = await findUserByIdAndUpdateProfile(
+      userId,
+      data,
+      res,
+      next
+    );
+
+    if (!userNewData) {
+      return res.status(500).json({ message: "Could not update user profile" });
+    }
+    return res.status(200).json({
+      message: "User Profile updated",
+      data: userNewData,
+    });
+  } catch (error) {
+    return next({
+      message: "Error, please try again",
+      error: error,
+    });
+  }
 };
