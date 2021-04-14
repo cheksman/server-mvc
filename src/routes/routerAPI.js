@@ -1,7 +1,11 @@
 /* eslint-disable max-len */
 import express from "express";
 import fileUpload from "express-fileupload";
-import { createUser, loginUser } from "../controllers/auth.controller";
+import {
+  activateAccount,
+  createUser,
+  loginUser,
+} from "../controllers/auth.controller";
 import {
   getAllUsers,
   createStudentAgent,
@@ -43,7 +47,7 @@ import {
   getPostsById,
   getAllPosts,
 } from "../controllers/posts.controller";
-import { sendOTP } from "./../controllers/forgotPassword.controller"
+import { sendOTP } from "./../controllers/forgotPassword.controller";
 const router = express.Router();
 router.use(fileUpload());
 
@@ -54,6 +58,7 @@ router.post("/user/update/role/:userId", auth, updateUserRole);
 router.get("/user/single", auth, getSingleUser);
 router.post("/users/bulk-create", auth, uploadBulkUsersFromExcel);
 router.patch("/user/updateProfile/:userId", auth, updateUserProfile);
+router.post("/user/account-activation", activateAccount);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);

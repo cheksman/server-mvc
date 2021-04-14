@@ -1,5 +1,6 @@
 import userModel from "../models/user.model";
 import { newToken } from "../utils/auth";
+import { sendOTP } from "../utils/twilioService";
 
 export const findUser = async (userPhone) => {
   const res = await userModel.findOne({ phone: userPhone }).lean().exec();
@@ -92,6 +93,7 @@ export const saveUser = async (req, res, next, user) => {
       // if val is true, destructure it and get the passowrd(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
+        sendOTP(req, res, next);
         return res.status(201).json({
           message: "Created  successfully",
           token,
