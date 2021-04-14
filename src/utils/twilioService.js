@@ -4,7 +4,9 @@ const twilio = require("twilio")(
   process.env.AUTH_TOKEN
 );
 
+// for requesting twilio token
 export const sendOTP = async (req, res, next) => {
+  console.log("running function");
   try {
     const { phoneNumber } = req.body;
     const updatedNumber = phoneNumber.replace(0, "+234");
@@ -36,3 +38,12 @@ export const sendOTP = async (req, res, next) => {
     });
   }
 };
+
+// For verifying twilio tokens
+export const verifyOTP = async (code, updatedNumber) => {
+  const verificationResult = await twilio.verify
+    .services(process.env.SERVICE_ID)
+    .verificationChecks.create({ to: updatedNumber, code: code });
+  return verificationResult;
+};
+//
