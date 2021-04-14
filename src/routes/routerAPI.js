@@ -42,7 +42,7 @@ import {
   getPostsById,
   getAllPosts,
 } from "../controllers/posts.controller";
-import { sendOTP } from "./../controllers/forgotPassword.controller"
+import { sendOTP,verifyOTP,resetPassword } from "./../controllers/forgotPassword.controller"
 const router = express.Router();
 router.use(fileUpload());
 
@@ -105,5 +105,6 @@ router.post("/mailchimp/subscribe", subscribeContactToMailchimp);
 
 //Forgot Password Routes
 router.get("/forgotPassword", sendOTP);
-// router.get("/verify", verifyPhoneNumber);
+router.get("/verify", verifyOTP);
+router.post("/reset", resetPassword)
 export default router;
