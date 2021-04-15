@@ -16,13 +16,17 @@ const twilio = require("twilio")(
 export const createUser = async (req, res, next) => {
   try {
     // destruture phoneNumber from the request body
-    const { phoneNumber, email } = req.body;
+    const { phoneNumber, email, userRole } = req.body;
     let user = null;
-    let userEmailExist;
+    let userEmailExist = null;
+    console.log(userRole);
 
     // check if a user with the phoneNumber entered already exist
-    user = await findUser(phoneNumber); //TODO: this returns null even when a number already exist
-    userEmailExist = await userModel.findOne({ email }).lean().exec();
+    user = await findUser(phoneNumber);
+    if (email) {
+      userEmailExist = await userModel.findOne({ email }).lean().exec();
+    }
+
     if (user) {
       return res.status(403).json({
         message: `Forbiden, User ${phoneNumber} already exists`,
