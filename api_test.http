@@ -15,12 +15,11 @@ POST http://localhost:8001/api/v1/signup/
 Content-type: application/json
 
 {
-    "phoneNumber": "07037541482",
+    "phoneNumber": "07030090090",
     "password": "admin12345",
-    "email": "mymtn1@gmail.com",
     "firstName": "Mtn",
     "lastName": "Number",
-    "userRole": "farmer"
+    "userRole": ["farmer", "msp"]
 }
 
 ### for testing the post request to update a user profile
