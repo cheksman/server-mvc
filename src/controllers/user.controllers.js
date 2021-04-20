@@ -13,6 +13,12 @@ import fs from "fs";
 import bcrypt from "bcryptjs";
 import * as Sentry from "@sentry/node";
 import { sendMail } from "../services/mail.services";
+import { verifyOTP } from "../utils/twilioService";
+
+const twilio = require("twilio")(
+  process.env.ACCOUNT_SID,
+  process.env.AUTH_TOKEN
+);
 
 export const getAllUsers = async (req, res, next) => {
   const { userRole } = req.userData;
@@ -363,6 +369,41 @@ export const updateUserProfile = async (req, res, next) => {
     return next({
       message: "Error, please try again",
       error: error,
+    });
+  }
+};
+
+// verify phone number for allowing a user reset his passowrd
+export const verifyphoneforpasswordreset = async (req, res, next) => {
+  const { code, phoneNumber } = req.body;
+  const updatedNumber = phoneNumber.replace(0, "+234");
+
+  let verificationResult;
+
+  try {
+    // check if the number is saved in our db
+    const user = await findUser(phoneNumber);
+
+    // if no user return an error message
+    if (!user) {
+      return res.status(400).json({
+        message: `No user with ${phoneNumber} found`,
+      });
+    }
+
+    // call the twilio api to verify the token sent to the user
+    verificationResult = await verifyOTP(code, updatedNumber);
+
+    // if the status is approved, update our activationStatus field in User model to enable user login
+    if (verificationResult.status === "approved") {
+      return res.status(200).json({
+        message: "Token has been verified",
+      });
+    }
+  } catch (e) {
+    return next({
+      message: "could not verify",
+      error: e,
     });
   }
 };
