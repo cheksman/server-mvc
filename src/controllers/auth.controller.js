@@ -19,7 +19,6 @@ export const createUser = async (req, res, next) => {
     const { phoneNumber, email, userRole } = req.body;
     let user = null;
     let userEmailExist = null;
-    console.log(userRole);
 
     // check if a user with the phoneNumber entered already exist
     user = await findUser(phoneNumber);
