@@ -1,5 +1,6 @@
 import userModel from "../models/user.model";
 import { newToken } from "../utils/auth";
+import { sendOTP } from "../utils/twilioService";
 
 export const findUser = async (userPhone) => {
   const res = await userModel.findOne({ phone: userPhone }).lean().exec();
@@ -10,6 +11,21 @@ export const findUserById = async (userId) => {
   const res = await userModel.findById(userId).lean().exec();
   return res;
 };
+
+// for updating a user profile
+export const findUserByIdAndUpdateProfile = async (userId, data) => {
+  // find and update a user profile using his id
+  const updateProfile = await userModel.findByIdAndUpdate(userId, data);
+
+  // pass in the id on the update status in the finById method and return the updated profile
+  const updatedProfile = await userModel.findById(updateProfile.id);
+
+  // we remove the password details to avoid displaying them to the user for security reasons
+  updatedProfile.password = "";
+  return updatedProfile;
+};
+
+// updating user role
 export const findUserByIdAndUpdate = async (
   userId,
   prevRole,
@@ -77,6 +93,7 @@ export const saveUser = async (req, res, next, user) => {
       // if val is true, destructure it and get the passowrd(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
+        sendOTP(req, res, next);
         return res.status(201).json({
           message: "Created  successfully",
           token,
