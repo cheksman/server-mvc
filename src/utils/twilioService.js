@@ -6,7 +6,7 @@ const twilio = require("twilio")(
 
 // for requesting twilio token
 export const sendOTP = async (req, res, next) => {
-  console.log("running function");
+  console.log("running function", req.body);
   try {
     const { phoneNumber } = req.body;
     const updatedNumber = phoneNumber.replace(0, "+234");
@@ -17,6 +17,13 @@ export const sendOTP = async (req, res, next) => {
     if (!user || phoneNumber === "") {
       return res.status(403).json({
         message: "Phone number is not registered",
+      });
+    }
+
+    if (user.activationStatus !== "activated") {
+      return res.status(403).json({
+        message:
+          "This phone number has not been verified. Please register to get verified",
       });
     }
     //if it exist, send an otp to the phone number entered
