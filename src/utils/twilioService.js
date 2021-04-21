@@ -6,7 +6,7 @@ const twilio = require("twilio")(
 
 // for requesting twilio token
 export const sendOTP = async (req, res, next) => {
-  console.log("running function");
+
   try {
     const { phoneNumber } = req.body;
     const updatedNumber = phoneNumber.replace(0, "+234");
@@ -29,6 +29,7 @@ export const sendOTP = async (req, res, next) => {
         })
         .then((data) => {
           res.status(200).send("Successful! Please check your messages.");
+        console.log(data)
         });
     }
   } catch (error) {

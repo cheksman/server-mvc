@@ -90,7 +90,7 @@ export const saveUser = async (req, res, next, user) => {
       // convert to a object
       const val = newUser.toObject();
 
-      // if val is true, destructure it and get the passowrd(since we don't want to display the password to users)
+      // if val is true, destructure it and get the password(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
         sendOTP(req, res, next);
