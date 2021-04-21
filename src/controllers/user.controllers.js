@@ -412,6 +412,7 @@ export const verifyphoneforpasswordreset = async (req, res, next) => {
   }
 };
 
+// for reseting a user's password
 export const resetPassword = async (req, res, next) => {
   try {
     const { password, confirmPassword } = req.body;
