@@ -118,13 +118,13 @@ router.post("/signup", createUser);
 router.post("/mailchimp/subscribe", subscribeContactToMailchimp);
 
 //Forgot Password Routes
-<<<<<<< HEAD
-router.get("/forgotPassword", verifyPhoneNumber);
-router.post("/verify", verifyCode);
-router.put("/reset", resetPassword);
-=======
+// <<<<<<< HEAD
+// router.get("/forgotPassword", verifyPhoneNumber);
+// router.post("/verify", verifyCode);
+// router.put("/reset", resetPassword);
+// =======
 router.get("/forgotPassword", sendOTP);
 router.get("/verify", verifyOTP);
 router.post("/reset", resetPassword)
->>>>>>> forgotPassword
+// >>>>>>> forgotPassword
 export default router;
