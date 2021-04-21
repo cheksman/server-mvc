@@ -47,9 +47,9 @@ import {
   getPostsById,
   getAllPosts,
 } from "../controllers/posts.controller";
-<<<<<<< HEAD
-import { verifyPhoneNumber, verifyCode, resetPassword } from "./../controllers/forgotPassword.controller";
-=======
+// <<<<<<< HEAD
+//import { verifyPhoneNumber, verifyCode, resetPassword } from "./../controllers/forgotPassword.controller";
+//=======
 import { sendOTP,verifyOTP,resetPassword } from "./../controllers/forgotPassword.controller"
 >>>>>>> forgotPassword
 const router = express.Router();

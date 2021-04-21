@@ -157,29 +157,29 @@ export const resetPassword = async(req,res,next) => {
 
  }
  
-export const resetPassword = async (req,res,next) => {
-    try{
-        const phoneNumber = "08134418109";
-        const { password,cPassword } = req.body;
-        const update = {password : password};
+// export const resetPassword = async (req,res,next) => {
+//     try{
+//         const phoneNumber = "08134418109";
+//         const { password,cPassword } = req.body;
+//         const update = {password : password};
 
-        if(password === cPassword){
-            const updatePassword = await userModel.findOneAndUpdate({phoneNumber, update})
+//         if(password === cPassword){
+//             const updatePassword = await userModel.findOneAndUpdate({phoneNumber, update})
    
-            return res.status(201).json({
-            message: "password succesfully updated!",
-            });
-        } 
-        else{
-            return res.status(403).json({
-            message: "Error, please try again",
-      });
-        }
-    }catch (error) {
-          return next({
-            message: "Error, please try again",
-            error: error,
-          });
-        }
-}
->>>>>>> forgotPassword
+//             return res.status(201).json({
+//             message: "password succesfully updated!",
+//             });
+//         } 
+//         else{
+//             return res.status(403).json({
+//             message: "Error, please try again",
+//       });
+//         }
+//     }catch (error) {
+//           return next({
+//             message: "Error, please try again",
+//             error: error,
+//           });
+//         }
+// }
+// >>>>>>> forgotPassword
