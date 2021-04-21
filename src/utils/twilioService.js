@@ -20,29 +20,25 @@ export const sendOTP = async (req, res, next) => {
       });
     }
 
-    if (user.activationStatus !== "activated") {
+    if (user.activationStatus === "activated") {
       return res.status(403).json({
         message:
           "This phone number has not been verified. Please register to get verified",
       });
     }
     //if it exist, send an otp to the phone number entered
-    else {
-      twilio.verify
-        .services(process.env.SERVICE_ID)
-        .verifications.create({
-          to: updatedNumber,
-          channel: "sms",
-        })
-        .then((data) => {
-          res.status(200).send("Successful! Please check your messages.");
-        });
-    }
+
+    twilio.verify
+      .services(process.env.SERVICE_ID)
+      .verifications.create({
+        to: updatedNumber,
+        channel: "sms",
+      })
+      .then((data) => {
+        res.status(200).send("Successful! Please check your messages.");
+      });
   } catch (error) {
-    return next({
-      message: "Error, please try again",
-      error: error,
-    });
+    next(error);
   }
 };
 
