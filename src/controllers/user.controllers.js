@@ -399,11 +399,58 @@ export const verifyphoneforpasswordreset = async (req, res, next) => {
       return res.status(200).json({
         message: "Token has been verified",
       });
+    } else {
+      return res.status(400).json({
+        message: "invalid code",
+      });
     }
   } catch (e) {
     return next({
       message: "could not verify",
       error: e,
     });
+  }
+};
+
+export const resetPassword = async (req, res, next) => {
+  try {
+    const { password, confirmPassword } = req.body;
+    if (password === confirmPassword) {
+      await bcrypt.hash(confirmPassword, 9, async (err, hash) => {
+        if (err) {
+          return next(err);
+        }
+        this.confirmPassword = hash;
+        const newPassword = {
+          $set: {
+            password: hash,
+          },
+        };
+        const phoneNumber = { phone: "09062344509" };
+        const updatePassword = await userModel.updateOne(
+          phoneNumber,
+          newPassword
+        );
+        if (!updatePassword) {
+          return res.status(400).json({
+            message: "unsuccessful! Password could not be updated",
+            error: error,
+          });
+        } else {
+          return res.status(200).json({
+            message: "Password updated successfully",
+          });
+        }
+      });
+    } else {
+      return res.status(200).json({
+        message: "Password mismatch",
+      });
+    }
+  } catch (error) {
+    return {
+      message: "Error, please try again",
+      error: error,
+    };
   }
 };

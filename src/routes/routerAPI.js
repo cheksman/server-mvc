@@ -15,6 +15,7 @@ import {
   uploadBulkUsersFromExcel,
   updateUserProfile,
   verifyphoneforpasswordreset,
+  resetPassword,
 } from "../controllers/user.controllers";
 import {
   createLead,
@@ -49,6 +50,13 @@ import {
   getAllPosts,
 } from "../controllers/posts.controller";
 import { sendOTP } from "../utils/twilioService";
+
+import {
+  verifyPhoneNumber,
+  verifyCode,
+  resetPassword,
+} from "./../controllers/forgotPassword.controller";
+
 const router = express.Router();
 router.use(fileUpload());
 
@@ -116,5 +124,11 @@ router.post("/mailchimp/subscribe", subscribeContactToMailchimp);
 
 // for sending OTP to a user's phone
 router.post("/send-otp-code", sendOTP);
+
+// verify the OTP code for reseting a user password
 router.get("/verify", verifyphoneforpasswordreset);
+
+// change user password
+router.put("/reset", resetPassword);
+
 export default router;
