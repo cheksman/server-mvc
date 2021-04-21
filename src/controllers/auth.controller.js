@@ -133,6 +133,7 @@ export const activateAccount = async (req, res, next) => {
 
     // call the twilio api to verify the token sent to the user
     verificationResult = await verifyOTP(code, updatedNumber);
+    console.log(verificationResult);
 
     // if the status is approved, update our activationStatus field in User model to enable user login
     if (verificationResult.status === "approved") {
