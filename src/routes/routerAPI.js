@@ -51,12 +51,6 @@ import {
 } from "../controllers/posts.controller";
 import { sendOTP } from "../utils/twilioService";
 
-import {
-  verifyPhoneNumber,
-  verifyCode,
-  resetPassword,
-} from "./../controllers/forgotPassword.controller";
-
 const router = express.Router();
 router.use(fileUpload());
 
