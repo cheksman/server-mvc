@@ -47,4 +47,4 @@ export const verifyOTP = async (code, updatedNumber) => {
     .verificationChecks.create({ to: updatedNumber, code: code });
   return verificationResult;
 };
-//
+

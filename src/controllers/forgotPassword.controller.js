@@ -1,13 +1,5 @@
-<<<<<<< HEAD
 import bcrypt from "bcryptjs";
-import { findUser } from "../services/user.services";
-import userModel from "../models/user.model";
 import {sendOTP, verifyOTP} from "../utils/twilioService"
-const twilio = require("twilio")(
-  process.env.ACCOUNT_SID,
-  process.env.AUTH_TOKEN
-);
-=======
 import {findUser} from "../services/user.services";
 import userModel from "../models/user.model";
 
