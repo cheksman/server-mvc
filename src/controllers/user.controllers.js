@@ -414,20 +414,21 @@ export const verifyphoneforpasswordreset = async (req, res, next) => {
 
 // for reseting a user's password
 export const resetPassword = async (req, res, next) => {
+  const { password, confirmPassword } = req.body;
+  const { phoneNumber } = req.params;
+
   try {
-    const { password, confirmPassword } = req.body;
     if (password === confirmPassword) {
-      await bcrypt.hash(confirmPassword, 9, async (err, hash) => {
+      await bcrypt.hash(password, 9, async (err, hash) => {
         if (err) {
           return next(err);
         }
-        this.confirmPassword = hash;
+        // this.password = hash;
         const newPassword = {
           $set: {
             password: hash,
           },
         };
-        const phoneNumber = { phone: "09062344509" };
         const updatePassword = await userModel.updateOne(
           phoneNumber,
           newPassword
@@ -445,7 +446,7 @@ export const resetPassword = async (req, res, next) => {
       });
     } else {
       return res.status(200).json({
-        message: "Password mismatch",
+        message: "Passwords dont't match",
       });
     }
   } catch (error) {

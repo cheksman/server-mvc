@@ -19,14 +19,6 @@ export const sendOTP = async (req, res, next) => {
       });
     }
 
-    if (user.activationStatus !== "activated") {
-      return res.status(403).json({
-        message:
-          "This phone number has not been verified. Please register to get verified",
-      });
-    }
-    //if it exist, send an otp to the phone number entered
-
     twilio.verify
       .services(process.env.SERVICE_ID)
       .verifications.create({
