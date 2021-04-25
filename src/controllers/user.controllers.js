@@ -333,10 +333,12 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
 
 // For updating a user profile
 export const updateUserProfile = async (req, res, next) => {
-  const { userRole } = req.userData;
-  const { userId } = req.params;
+  const { userRole, userId } = req.userData;
+  const { userId:Id } = req.params;
   const data = req.body;
   try {
+
+    // check if user role is part of the data being sent and check the role of the user updating his profile
     if (data.userRole && !isUserAdmin(userRole)) {
       return res.status(500).json({
         message:
@@ -344,6 +346,7 @@ export const updateUserProfile = async (req, res, next) => {
       });
     }
 
+    // check if password is available in the data 
     if (data.password) {
       return res.status(500).json({
         message:
@@ -351,6 +354,14 @@ export const updateUserProfile = async (req, res, next) => {
       });
     }
 
+    // confirm that it's the authenticated user that is updating his own profile
+    if(userId !== Id){
+      return res.status(500).json({
+        message: "Sorry this profile does not belong to you"
+      })
+    }
+
+    // update the database
     const userNewData = await findUserByIdAndUpdateProfile(
       userId,
       data,
@@ -358,12 +369,9 @@ export const updateUserProfile = async (req, res, next) => {
       next
     );
 
-    if (!userNewData) {
-      return res.status(500).json({ message: "Could not update user profile" });
-    }
     return res.status(200).json({
       message: "User Profile updated",
-      data: userNewData,
+      // data: userNewData,
     });
   } catch (error) {
     return next({
