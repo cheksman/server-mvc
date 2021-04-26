@@ -35,6 +35,18 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1cGVyY
 }
 
 
+###
+PATCH http://localhost:8001/api/v1/user/change-password/
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InByaXllb2JhcmVtaUBnbWFpbC5jb20iLCJ1c2VyUm9sZSI6WyJhZG1pbiJdLCJhY3RpdmUiOnRydWUsInVzZXJJZCI6IjYwNWY1YzJhNjRjZTViNjJlYzdmZjhkNyIsImZuYW1lIjoiTWljaGVhbCIsImxuYW1lIjoiSmsiLCJpYXQiOjE2MTk0Njk0MjIsImV4cCI6MTYxOTU1NTgyMn0.sPgg6YND-9ukNkOJ02GElPe0dDn_VKkjna1DmVwK0Mg
+
+{
+    "oldPassword": "admin12345",
+    "password": "qwerty",
+    "confirmPassword": "qwerty"
+}
+
+
 
 ### for getting all investors
 GET http://localhost:8001/api/v1/entries/all-investors/
