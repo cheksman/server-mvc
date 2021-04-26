@@ -66,6 +66,7 @@ const userSchema = new Schema(
     },
     gender: {
       type: String,
+      enum: ["Male", "Female"]
     },
     age: {
       type: String,
@@ -88,6 +89,9 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
+    dateOfBirth:{
+      type: Date
+    }
   },
   { timestamps: true }
 );
