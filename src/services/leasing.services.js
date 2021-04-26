@@ -1,7 +1,7 @@
 import leasingModel from "../models/leasing.model";
 
 export const findLeasingRequestService = async (leasingId) => {
-  return await leasingModel.findById(leasingId).populate('leasor', 'tractorsAssigned').lean().exec();
+  return await leasingModel.findById(leasingId).populate('leasor').lean().exec();
 };
 
 export const findLeasingRequestAndUpdateService = async (leasingId, props) => {
@@ -18,21 +18,20 @@ export const findLeasingRequestAndUpdateService = async (leasingId, props) => {
 
 // custom built for assign tractors
 export const getLeasingRequestAndUpdateService = async (leasingId, tractorId, status) => {
-  console.log("service running")
-  await leasingModel.findByIdAndUpdate(leasingId, {
-    tractorsAssigned: tractorId,
+  const {tractorsAssigned} = await leasingModel.findById(leasingId).lean().exec()
+  const res = await leasingModel.findByIdAndUpdate(leasingId, {
+    tractorsAssigned: [tractorId, ...tractorsAssigned],
     status: status,
   }).populate('leasor', 'tractorsAssigned')
-  const res = await leasingModel.findById(leasingId).populate('leasor', 'tractorsAssigned')
   return res
 }
 
 export const getAllLeasingsService = async () => {
-  return await leasingModel.find().populate("leasor", "tractorsAssigned").lean().exec();
+  return await leasingModel.find().populate("leasor").lean().exec();
 };
 
 export const getQueriedLeasingsService = async (queries) => {
-  const res = await leasingModel.find({ ...queries }).populate("leasor", "tractorsAssigned").lean().exec();
+  const res = await leasingModel.find({ ...queries }).populate("leasor").lean().exec();
   return res
 };
 

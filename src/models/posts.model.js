@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const postsModel = new Schema(
   {
     author: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
     postAuthor: {

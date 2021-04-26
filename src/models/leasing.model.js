@@ -6,7 +6,7 @@ const { Schema } = mongoose;
 const leasorSchema = new Schema(
   {
     leasor: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
     status: {
@@ -15,7 +15,7 @@ const leasorSchema = new Schema(
       default: "processing",
     },
     tractorsAssigned: [{
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "tractor",
     }],
     startDate: {
