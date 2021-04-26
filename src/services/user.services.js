@@ -1,15 +1,31 @@
 import userModel from "../models/user.model";
 import { newToken } from "../utils/auth";
+import { sendOTP } from "../utils/twilioService";
 
 export const findUser = async (userPhone) => {
   const res = await userModel.findOne({ phone: userPhone }).lean().exec();
-  return res
-}
+  return res;
+};
 
-export const findUserById = async (userId) =>{
+export const findUserById = async (userId) => {
   const res = await userModel.findById(userId).lean().exec();
-  return res
-}
+  return res;
+};
+
+// for updating a user profile
+export const findUserByIdAndUpdateProfile = async (userId, data) => {
+  // find and update a user profile using his id
+  const updateProfile = await userModel.findByIdAndUpdate(userId, data);
+
+  // pass in the id on the update status in the finById method and return the updated profile
+  const updatedProfile = await userModel.findById(updateProfile.id);
+
+  // we remove the password details to avoid displaying them to the user for security reasons
+  updatedProfile.password = "";
+  return updatedProfile;
+};
+
+// updating user role
 export const findUserByIdAndUpdate = async (
   userId,
   prevRole,
@@ -44,7 +60,7 @@ export const findUserByIdAndUpdate = async (
   }
 };
 
-export const saveUser = async (req, res, next, userRole) => {
+export const saveUser = async (req, res, next, user) => {
   // destructure the resquest body parameter
   const {
     phoneNumber,
@@ -52,7 +68,7 @@ export const saveUser = async (req, res, next, userRole) => {
     password,
     firstName,
     lastName,
-    gender,
+    userRole,
   } = req.body;
 
   try {
@@ -64,7 +80,7 @@ export const saveUser = async (req, res, next, userRole) => {
       userRole: userRole,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
-      ...(gender && { gender: gender }),
+      // ...(gender && { gender: gender }),
     });
 
     // if the user was created, generate a token for him using the newToken method
@@ -74,9 +90,10 @@ export const saveUser = async (req, res, next, userRole) => {
       // convert to a object
       const val = newUser.toObject();
 
-      // if val is true, destructure it and get the passowrd(since we don't want to display the password to users)
+      // if val is true, destructure it and get the password(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
+        const otp = sendOTP(req, res, next);
         return res.status(201).json({
           message: "Created  successfully",
           token,

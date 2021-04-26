@@ -7,8 +7,8 @@ import {
 } from "../services/tractor.services";
 import {
   findLeasingRequestAndUpdateService,
-  findLeasingRequestService,
   getLeasingRequestAndUpdateService,
+  findLeasingRequestService,
 } from "../services/leasing.services";
 import { uploadFile } from "../utils/uploader";
 import { isUserAdmin, isUserStudent } from "../utils/helpers";
@@ -106,6 +106,7 @@ export const getActivationStatus = async (req, res, next) => {
   console.log("running");
   const { userRole, userId } = req.userData;
   const isStudent = isUserStudent(userRole);
+  console.log(isStudent, "is student");
   try {
     if (isStudent) {
       const user = await userModel.findById(userId).lean().exec();
@@ -136,7 +137,7 @@ export const verifyTractor = async (req, res, next) => {
         status: "verified",
       });
       if (tractor) {
-        return res.status(201).json({
+        return res.status(200).json({
           message: "Tractor Verified",
           data: tractor,
         });
@@ -157,12 +158,15 @@ export const verifyTractor = async (req, res, next) => {
 };
 
 export const assignTractorToUsers = async (req, res, next) => {
+  console.log("running");
   const { tractorId, leasingId } = req.params;
   const { status } = req.body;
   const { userRole } = req.userData;
+  console.log(status, "status");
   try {
     // check if user is has Admin role
     if (isUserAdmin(userRole)) {
+      console.log("checking user role");
       // find the tractor with the specified ID and check if it has been verified
       const tractorStatus = await findTractorService(tractorId);
       if (tractorStatus.status == "unverified") {
@@ -172,25 +176,15 @@ export const assignTractorToUsers = async (req, res, next) => {
         });
       }
 
-      // check if the lease request has already been assigned a tractor
-      const leaseStatus = await findLeasingRequestService(leasingId);
-      if (leaseStatus.status === "assigned") {
+      // // check if the tractor has already been assigned
+      if (tractorStatus.assigned === true) {
         return res.status(500).json({
           message: "Tractor has already been assigned",
         });
       }
 
-      // check if tractor is in the array of assigned tractors in the leasing model db
-      const tractorAlreadyAssigned = leaseStatus.tractorsAssigned.includes(
-        tractorId
-      );
-      if (tractorAlreadyAssigned === true) {
-        return res.status(500).json({
-          message: "This tractor is already assigned to this user",
-        });
-      }
-
-      if (status === "accepted") {
+      if (status === "assigned") {
+        console.log("running assigned");
         const leasingStatus = await getLeasingRequestAndUpdateService(
           leasingId,
           tractorId,
@@ -198,20 +192,25 @@ export const assignTractorToUsers = async (req, res, next) => {
         );
 
         if (leasingStatus !== null) {
-          const res = await findTractorAndUpdateService(tractorId, {
+          await findTractorAndUpdateService(tractorId, {
             assigned: true,
+          });
+          return res.status(200).json({
+            message: "Tractor successfully assigned",
           });
         }
       }
     }
   } catch (error) {
-    console.log(error);
+    return next({
+      message: "Failed to assign the tractor",
+      err: error,
+})
   }
 };
 
 export const assignTractor = async (req, res, next) => {
   const { tractorId, leasingId } = req.params;
-  const { userRole } = req.userData;
   try {
     if (isUserAdmin(userRole)) {
       const tractor = await findTractorAndUpdateService(tractorId, {
