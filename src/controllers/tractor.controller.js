@@ -205,13 +205,12 @@ export const assignTractorToUsers = async (req, res, next) => {
     return next({
       message: "Failed to assign the tractor",
       err: error,
-    });
+})
   }
 };
 
 export const assignTractor = async (req, res, next) => {
   const { tractorId, leasingId } = req.params;
-  const { userRole } = req.userData;
   try {
     if (isUserAdmin(userRole)) {
       const tractor = await findTractorAndUpdateService(tractorId, {
@@ -239,3 +238,26 @@ export const assignTractor = async (req, res, next) => {
     });
   }
 };
+
+export const getTractorProfile = async (req, res, next) => {
+  const {tractorId} = req.params;
+  {
+    try {
+      const tractorProfile = await findTractorService(tractorId)
+      if(!tractorProfile) {
+        return res.status(404).json({
+          message: "No tractor with this ID found"
+        })
+      }
+      return res.status(200).json({
+        message: "Successful",
+        data: tractorProfile
+      })
+    } catch (error) {
+      return next({
+        message: "Error getting profile",
+        err: error
+      })
+    }
+  }
+}

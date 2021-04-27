@@ -5,7 +5,7 @@ const { Schema } = mongoose;
 const inquiriesModel = new Schema(
   {
     user: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "user",
     },
     message: {
