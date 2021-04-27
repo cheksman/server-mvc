@@ -16,6 +16,7 @@ import {
   updateUserProfile,
   verifyphoneforpasswordreset,
   resetPassword,
+  changePassword,
 } from "../controllers/user.controllers";
 import {
   createLead,
@@ -63,6 +64,7 @@ router.get("/user/single", auth, getSingleUser);
 router.post("/users/bulk-create", auth, uploadBulkUsersFromExcel);
 router.patch("/user/updateProfile/:userId", auth, updateUserProfile);
 router.post("/user/account-activation", activateAccount);
+router.patch("/user/change-password", auth, changePassword);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
