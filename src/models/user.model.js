@@ -66,7 +66,7 @@ const userSchema = new Schema(
     },
     gender: {
       type: String,
-      enum: ["Male", "Female"]
+      enum: ["Male", "Female"],
     },
     age: {
       type: String,
@@ -89,21 +89,25 @@ const userSchema = new Schema(
       type: Boolean,
       default: true,
     },
-    dateOfBirth:{
-      type: Date
+    dateOfBirth: {
+      type: Date,
     },
     bank: {
       type: String,
-      default: ""
+      default: "",
     },
-    accountNumber:{
+    accountNumber: {
       type: String,
-      default: ""
+      default: "",
     },
     accountName: {
       type: String,
-      default: ""
-    }
+      default: "",
+    },
+    howYouHeardAboutUs: {
+      type: String,
+      default: "",
+    },
   },
   { timestamps: true }
 );

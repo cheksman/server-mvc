@@ -69,6 +69,7 @@ export const saveUser = async (req, res, next, user) => {
     firstName,
     lastName,
     userRole,
+    howYouHeardAboutUs,
   } = req.body;
 
   try {
@@ -78,6 +79,7 @@ export const saveUser = async (req, res, next, user) => {
       fname: firstName,
       lname: lastName,
       userRole: userRole,
+      howYouHeardAboutUs: howYouHeardAboutUs,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
       // ...(gender && { gender: gender }),
