@@ -72,11 +72,15 @@ export const getQueriedLeasingsService = async (queries) => {
 export const saveLeaseRequestService = async (req, res, next, leasorId) => {
   // get the necessary values from req.body and pass either empty strings or new as defaults
   const {
-    farmLocation = "",
-    tractorNumberRequired = "",
     farmSize = "",
     startDate = new Date(),
     endDate = new Date(),
+    services = [""],
+    amountToPay = "",
+    state = "",
+    lga = "",
+    address = "",
+
   } = req.body;
 
   try {
@@ -84,10 +88,13 @@ export const saveLeaseRequestService = async (req, res, next, leasorId) => {
     const newLeaseRequest = await leasingModel.create({
       leasor: leasorId,
       farmSize,
-      farmLocation,
-      tractorNumberRequired,
       startDate,
       endDate,
+      services,
+      amountToPay,
+      state,
+      lga,
+      address
     });
 
     // if saving to db fails, return this

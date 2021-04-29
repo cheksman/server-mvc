@@ -30,8 +30,20 @@ const leasorSchema = new Schema(
     tractorNumberRequired: {
       type: String,
     },
-    farmLocation: {
-        type: String
+    state: {
+        type: String,
+    },
+    lga: {
+      type: String,
+    },
+    address: {
+      type: String,
+    },
+    amountToPay: {
+      type: String,
+    },
+    services: {
+      type: [String],
     }
   },
   { timestamps: true }

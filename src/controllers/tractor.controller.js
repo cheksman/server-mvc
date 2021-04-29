@@ -50,10 +50,10 @@ export const getAllTractors = async (req, res, next) => {
 // for adding new tractors
 export const addNewTractor = async (req, res, next) => {
   // destructure the values from req,body
-  const { ...values } = req.body;
+  const { values } = req.body;
 
   // convert to javascript object
-  const reqVal = JSON.parse(JSON.stringify(values));
+  const reqVal = JSON.parse(values);
 
   // get the uploaded image from req.files
   const tractorImage = req.files && req.files.file;
