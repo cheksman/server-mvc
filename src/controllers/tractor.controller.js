@@ -106,7 +106,6 @@ export const getActivationStatus = async (req, res, next) => {
   console.log("running");
   const { userRole, userId } = req.userData;
   const isStudent = isUserStudent(userRole);
-  console.log(isStudent, "is student");
   try {
     if (isStudent) {
       const user = await userModel.findById(userId).lean().exec();
@@ -158,15 +157,12 @@ export const verifyTractor = async (req, res, next) => {
 };
 
 export const assignTractorToUsers = async (req, res, next) => {
-  console.log("running");
   const { tractorId, leasingId } = req.params;
   const { status } = req.body;
   const { userRole } = req.userData;
-  console.log(status, "status");
   try {
     // check if user is has Admin role
     if (isUserAdmin(userRole)) {
-      console.log("checking user role");
       // find the tractor with the specified ID and check if it has been verified
       const tractorStatus = await findTractorService(tractorId);
       if (tractorStatus.status == "unverified") {
@@ -184,7 +180,6 @@ export const assignTractorToUsers = async (req, res, next) => {
       }
 
       if (status === "assigned") {
-        console.log("running assigned");
         const leasingStatus = await getLeasingRequestAndUpdateService(
           leasingId,
           tractorId,
@@ -205,7 +200,7 @@ export const assignTractorToUsers = async (req, res, next) => {
     return next({
       message: "Failed to assign the tractor",
       err: error,
-})
+});
   }
 };
 
@@ -243,21 +238,21 @@ export const getTractorProfile = async (req, res, next) => {
   const {tractorId} = req.params;
   {
     try {
-      const tractorProfile = await findTractorService(tractorId)
+      const tractorProfile = await findTractorService(tractorId);
       if(!tractorProfile) {
         return res.status(404).json({
           message: "No tractor with this ID found"
-        })
+        });
       }
       return res.status(200).json({
         message: "Successful",
         data: tractorProfile
-      })
+      });
     } catch (error) {
       return next({
         message: "Error getting profile",
         err: error
-      })
+      });
     }
   }
-}
+};

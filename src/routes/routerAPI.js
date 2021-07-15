@@ -83,7 +83,7 @@ router.get("/entries/all-investors", auth, getAllInvestors);
 router.post("/tractor/add-new", auth, addNewTractor);
 router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
 router.get("/tractor/all", auth, getAllTractors);
-router.get("/tractor/profile/:tractorId", auth, getTractorProfile)
+router.get("/tractor/profile/:tractorId", auth, getTractorProfile);
 // to update a tractor after verification
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
 
