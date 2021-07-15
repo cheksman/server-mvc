@@ -14,6 +14,7 @@ import bcrypt from "bcryptjs";
 import * as Sentry from "@sentry/node";
 import { sendMail } from "../services/mail.services";
 import { verifyOTP } from "../utils/twilioService";
+import { hashPassword } from "../utils/hashPassword";
 
 const twilio = require("twilio")(
   process.env.ACCOUNT_SID,
@@ -333,10 +334,11 @@ export const uploadBulkUsersFromExcel = (req, res, next) => {
 
 // For updating a user profile
 export const updateUserProfile = async (req, res, next) => {
-  const { userRole } = req.userData;
-  const { userId } = req.params;
+  const { userRole, userId } = req.userData;
+  const { userId: Id } = req.params;
   const data = req.body;
   try {
+    // check if user role is part of the data being sent and check the role of the user updating his profile
     if (data.userRole && !isUserAdmin(userRole)) {
       return res.status(500).json({
         message:
@@ -344,6 +346,7 @@ export const updateUserProfile = async (req, res, next) => {
       });
     }
 
+    // check if password is available in the data
     if (data.password) {
       return res.status(500).json({
         message:
@@ -351,6 +354,14 @@ export const updateUserProfile = async (req, res, next) => {
       });
     }
 
+    // confirm that it's the authenticated user that is updating his own profile
+    if (userId !== Id) {
+      return res.status(500).json({
+        message: "Sorry this profile does not belong to you",
+      });
+    }
+
+    // update the database
     const userNewData = await findUserByIdAndUpdateProfile(
       userId,
       data,
@@ -358,12 +369,9 @@ export const updateUserProfile = async (req, res, next) => {
       next
     );
 
-    if (!userNewData) {
-      return res.status(500).json({ message: "Could not update user profile" });
-    }
     return res.status(200).json({
       message: "User Profile updated",
-      data: userNewData,
+      // data: userNewData,
     });
   } catch (error) {
     return next({
@@ -414,20 +422,21 @@ export const verifyphoneforpasswordreset = async (req, res, next) => {
 
 // for reseting a user's password
 export const resetPassword = async (req, res, next) => {
+  const { password, confirmPassword } = req.body;
+  const { phoneNumber } = req.params;
+
   try {
-    const { password, confirmPassword } = req.body;
     if (password === confirmPassword) {
-      await bcrypt.hash(confirmPassword, 9, async (err, hash) => {
+      await bcrypt.hash(password, 9, async (err, hash) => {
         if (err) {
           return next(err);
         }
-        this.confirmPassword = hash;
+        this.password = hash;
         const newPassword = {
           $set: {
             password: hash,
           },
         };
-        const phoneNumber = { phone: "09062344509" };
         const updatePassword = await userModel.updateOne(
           phoneNumber,
           newPassword
@@ -445,7 +454,7 @@ export const resetPassword = async (req, res, next) => {
       });
     } else {
       return res.status(200).json({
-        message: "Password mismatch",
+        message: "Passwords dont't match",
       });
     }
   } catch (error) {
@@ -453,5 +462,66 @@ export const resetPassword = async (req, res, next) => {
       message: "Error, please try again",
       error: error,
     };
+  }
+};
+
+// change a user passowrd
+export const changePassword = async (req, res, next) => {
+  const { oldPassword, password, confirmPassword } = req.body;
+  const { userId } = req.userData;
+
+  try {
+    const user = await findUserById(userId);
+
+    if (!user) {
+      return res.status(401).json({
+        message: "User not found",
+      });
+    }
+    // check if password and confirmPassword are the same
+    if (password !== confirmPassword) {
+      return res.status(400).json({
+        message: "Passwords does match",
+      });
+    }
+
+    // check if any of the fields are empty
+    if (!oldPassword && !password && confirmPassword) {
+      return res.status(400).json({
+        message: "All fields are required",
+      });
+    }
+
+    // check if oldPassword entered matches what is currently on db
+    const comparePasswords = await bcrypt.compare(oldPassword, user.password);
+
+    if (!comparePasswords) {
+      return res.status(401).json({
+        message: "Incorrect old password",
+      });
+    }
+
+    // hash the password
+    const hashedPasssword = await hashPassword(password, 9);
+
+    // update the db
+    const updatedPassword = await userModel.findByIdAndUpdate(userId, {
+      $set: { password: hashedPasssword },
+    });
+
+    if (!updatedPassword) {
+      return res.status(400).json({
+        message: "unsuccessful! Password could not be updated",
+        error: error,
+      });
+    } else {
+      return res.status(200).json({
+        message: "Password updated successfully",
+      });
+    }
+  } catch (error) {
+    return next({
+      message: "Error updating password",
+    });
   }
 };

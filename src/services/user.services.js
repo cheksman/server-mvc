@@ -69,6 +69,7 @@ export const saveUser = async (req, res, next, user) => {
     firstName,
     lastName,
     userRole,
+    howYouHeardAboutUs,
   } = req.body;
 
   try {
@@ -78,6 +79,7 @@ export const saveUser = async (req, res, next, user) => {
       fname: firstName,
       lname: lastName,
       userRole: userRole,
+      howYouHeardAboutUs: howYouHeardAboutUs,
       ...(password !== "" && { password: password }),
       ...(email !== "" && { email: email }),
       // ...(gender && { gender: gender }),
@@ -93,7 +95,7 @@ export const saveUser = async (req, res, next, user) => {
       // if val is true, destructure it and get the password(since we don't want to display the password to users)
       if (val) {
         const { password: p, ...rest } = val;
-        sendOTP(req, res, next);
+        const otp = sendOTP(req, res, next);
         return res.status(201).json({
           message: "Created  successfully",
           token,

@@ -5,7 +5,7 @@ const ObjectId = mongoose.Types.ObjectId;
 
 export const findTractorService = async (tractorId) => {
   const res = await tractorModel.findById({  _id: ObjectId(tractorId)}).populate('user', 'assignedTo').lean().exec();
-  return res
+  return res;
 };
 
 export const findTractorAndUpdateService = async (tractorId, props) => {
@@ -17,7 +17,7 @@ export const findTractorAndUpdateService = async (tractorId, props) => {
       new: true,
       upsert: true
     }
-  ).populate('user', 'assignedTo')
+  ).populate('user', 'assignedTo');
 };
 
 export const getAllTractorService = async () => {
@@ -54,7 +54,7 @@ export const saveTractorService = async (
     address = "",
     status = ""
   } = reqVal;
-
+console.log("i am here");
   try {
     const newTractor = await tractorModel.create({
       user: userId,

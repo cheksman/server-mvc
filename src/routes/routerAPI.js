@@ -16,6 +16,7 @@ import {
   updateUserProfile,
   verifyphoneforpasswordreset,
   resetPassword,
+  changePassword,
 } from "../controllers/user.controllers";
 import {
   createLead,
@@ -31,6 +32,7 @@ import {
   addNewTractor,
   getAllUserTractors,
   getActivationStatus,
+  getTractorProfile,
   getAllTractors,
   assignTractor,
   verifyTractor,
@@ -62,6 +64,7 @@ router.get("/user/single", auth, getSingleUser);
 router.post("/users/bulk-create", auth, uploadBulkUsersFromExcel);
 router.patch("/user/updateProfile/:userId", auth, updateUserProfile);
 router.post("/user/account-activation", activateAccount);
+router.patch("/user/change-password", auth, changePassword);
 
 // Enries Routes
 router.post("/user/web/create-agent", createAgentLead);
@@ -80,7 +83,7 @@ router.get("/entries/all-investors", auth, getAllInvestors);
 router.post("/tractor/add-new", auth, addNewTractor);
 router.get("/tractor/:userId/tractors", auth, getAllUserTractors);
 router.get("/tractor/all", auth, getAllTractors);
-
+router.get("/tractor/profile/:tractorId", auth, getTractorProfile);
 // to update a tractor after verification
 router.put("/tractor/verify/:tractorId", auth, verifyTractor);
 
